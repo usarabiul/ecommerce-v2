@@ -1,5 +1,5 @@
 <!DOCTYPE html>
- <html lang="en" class="color-sidebar sidebarcolor3 color-header headercolor2" >
+ <html lang="en" class="light-theme" >
    <!-- BEGIN: Head-->
    <head>
 
@@ -15,82 +15,26 @@
     <link rel="apple-touch-icon" href="{{asset(general()->favicon())}}" />
     <link rel="shortcut icon" type="image/x-icon" href="{{asset(general()->favicon())}}" />
 
-    <!-- GOOGLE FONT -->
-    <link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600" rel="stylesheet"><!-- End GOOGLE FONT -->
-    <!-- BEGIN PLUGINS STYLES -->
-    <link rel="stylesheet" href="{{asset(assetLinkAdmin().'/vendor/open-iconic/font/css/open-iconic-bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset(assetLinkAdmin().'/vendor/@fortawesome/fontawesome-free/css/all.min.css')}}">
-    <link rel="stylesheet" href="{{asset(assetLinkAdmin().'/vendor/flatpickr/flatpickr.min.css')}}">
-    <link rel="stylesheet" href="{{asset(assetLinkAdmin().'/vendor/select2/css/select2.min.css')}}">
-    <!-- END PLUGINS STYLES -->
-    <!-- BEGIN THEME STYLES -->
-    <link rel="stylesheet" href="{{asset(assetLinkAdmin().'/stylesheets/theme.min.css')}}" data-skin="default">
-    <link rel="stylesheet" href="{{asset(assetLinkAdmin().'/stylesheets/custom.css')}}">
-    <link rel="stylesheet" href="{{asset(assetLinkAdmin().'/stylesheets/tag-editor.css')}}" >
+    <!--plugins-->
+	 <link rel="stylesheet"  href="{{asset(assetLinkAdmin().'/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css')}}" />
+	 <link rel="stylesheet"  href="{{asset(assetLinkAdmin().'/assets/plugins/simplebar/css/simplebar.css')}}" />
+	 <link rel="stylesheet"  href="{{asset(assetLinkAdmin().'/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css')}}" />
+	 <link rel="stylesheet"  href="{{asset(assetLinkAdmin().'/assets/plugins/metismenu/css/metisMenu.min.css')}}" />
+	 <!-- loader-->
+	 <link rel="stylesheet"  href="{{asset(assetLinkAdmin().'/assets/css/pace.min.css')}}" />
+	 <script src="{{asset(assetLinkAdmin().'/assets/js/pace.min.js')}}"></script>
+	 <!-- Bootstrap CSS -->
+	 <link rel="stylesheet"  href="{{asset(assetLinkAdmin().'/assets/css/bootstrap.min.css')}}" />
+	 <link rel="stylesheet"  href="{{asset(assetLinkAdmin().'/assets/css/bootstrap-extended.css')}}" />
+	 <link rel="stylesheet"  href="{{asset(assetLinkAdmin().'/assets/css/app.css')}}" />
+	 <link rel="stylesheet"  href="{{asset(assetLinkAdmin().'/assets/css/icons.css')}}" />
+	 <!-- Theme Style CSS -->
+	 <link rel="stylesheet" href="{{asset(assetLinkAdmin().'/assets/css/dark-theme.css')}}" />
+	 <link rel="stylesheet" href="{{asset(assetLinkAdmin().'/assets/css/semi-dark.css')}}" />
+	 <link rel="stylesheet" href="{{asset(assetLinkAdmin().'/assets/css/header-colors.css')}}" />
 
     <style type="text/css">
-      .card-title {
-          margin: 0;
-      }
-      .metric{
-        background: #ffffff;
-      }
-      .stacked-menu .menu-item.has-open.has-child>.menu-link {
-          color: #f7c46c;
-          font-weight: bold;
-      }
-      .breadcrumb, .breadcrumb-item {
-          display: flex;
-          font-size: 18px;
-      }
-      .page-title-bar .btn-toolbar{
-          margin-left: 0 !important;
-      }
-      table tr td {
-          vertical-align: middle;
-      }
-       ul.statuslist {
-            text-align: right;
-        }
-
-        ul.statuslist li {
-            display: inline-block;
-        }
-
-        ul.statuslist li a {
-            border: 1px solid #d1cece;
-            padding: 3px 6px;
-            border-radius: 15px;
-            display: inline-block;
-            margin: 3px 1px;
-            font-size: 12px;
-        }
-
-         .slugEditData{
-            height: 30px;
-            padding: 4px 10px;
-        }
-        .showPassword{
-          cursor:pointer;
-        }
-        .bootstrap-select .dropdown-toggle:focus, .bootstrap-select>select.mobile-device:focus+.dropdown-toggle{
-          outline: 5px auto #ebe3e3 !important;
-        }
-        .app-aside-light {
-          background-color: #ffffff;
-        }
-        input[type="file"]{
-          padding:3px;
-        }
-        
-        input:disabled{
-          background: #e5e5e5 !important;
-        }
-        .invalid-feedback {
-            display: block;
-            font-size: 100%;
-            color: #c20c0c;
-        }
+      
     </style>
 
      @stack('css')
@@ -100,46 +44,37 @@
    <!-- BEGIN: Body-->
    <body class="default-skin pace-done">
       <!--wrapper-->
-	    <div class="app">
+	    <div class="wrapper">
     
+        @include(adminTheme().'layouts.sidebar')
+
         @include(adminTheme().'layouts.header')
 
-        @include(adminTheme().'layouts.sidebar')
         
-        <main class="app-main">
-            <div class="wrapper">
-              <div class="page">
-                <div class="page-inner">
-                  @yield('contents')
-                </div>
-              </div>
-            </div>
-            @include(adminTheme().'layouts.footer')
-        </main>
-      </div>
-    <!-- BEGIN BASE JS -->
-    <script src="{{asset(assetLinkAdmin().'/vendor/jquery/jquery.min.js')}}"></script>
-    <script src="{{asset(assetLinkAdmin().'/vendor/popper.js/umd/popper.min.js')}}"></script>
-    <script src="{{asset(assetLinkAdmin().'/vendor/bootstrap/js/bootstrap.min.js')}}"></script> <!-- END BASE JS -->
-    <!-- BEGIN PLUGINS JS -->
-    <script src="{{asset(assetLinkAdmin().'/vendor/pace-progress/pace.min.js')}}"></script>
-    <script src="{{asset(assetLinkAdmin().'/vendor/stacked-menu/js/stacked-menu.min.js')}}"></script>
-    <script src="{{asset(assetLinkAdmin().'/vendor/perfect-scrollbar/perfect-scrollbar.min.js')}}"></script>
-    <script src="{{asset(assetLinkAdmin().'/vendor/flatpickr/flatpickr.min.js')}}"></script>
-    <script src="{{asset(assetLinkAdmin().'/vendor/easy-pie-chart/jquery.easypiechart.min.js')}}"></script>
-    <script src="{{asset(assetLinkAdmin().'/vendor/chart.js/Chart.min.js')}}"></script> 
-    <!-- END PLUGINS JS -->
-    <script src="https://code.jquery.com/ui/1.13.3/jquery-ui.min.js"></script>
-    <script src="{{asset(assetLinkAdmin().'/printThis.js')}}"></script>
-    <script src="{{asset(assetLinkAdmin().'/js/tag-editor.js')}}"></script>
-    <script src="{{asset(assetLinkAdmin().'/vendor/select2/js/select2.min.js')}}"></script>
-    <script src="{{asset(assetLinkAdmin().'/javascript/pages/select2-demo.js')}}"></script>
-    <!-- BEGIN THEME JS -->
-    <script src="{{asset(assetLinkAdmin().'/javascript/theme.min.js')}}"></script> <!-- END THEME JS -->
-    <!-- BEGIN PAGE LEVEL JS -->
-    <script src="{{asset(assetLinkAdmin().'/javascript/pages/dashboard-demo.js')}}"></script> 
-    <!-- END PAGE LEVEL JS -->
-      <script src="{{asset(assetLinkAdmin().'/javascript/tag-editor.js')}}"></script>
+        <div class="page-wrapper">
+			    <div class="page-content">
+              @yield('contents')
+          </div>
+        </div>
+
+          @include(adminTheme().'layouts.footer')
+        </div>
+
+   <!-- Bootstrap JS -->
+	 <script src="{{asset(assetLinkAdmin().'/assets/js/bootstrap.bundle.min.js')}}"></script>
+	 <!--plugins-->
+	 <script src="{{asset(assetLinkAdmin().'/assets/js/jquery.min.js')}}"></script>
+	 <script src="{{asset(assetLinkAdmin().'/assets/plugins/simplebar/js/simplebar.min.js')}}"></script>
+	 <script src="{{asset(assetLinkAdmin().'/assets/plugins/metismenu/js/metisMenu.min.js')}}"></script>
+	 <script src="{{asset(assetLinkAdmin().'/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js')}}"></script>
+	 <script src="{{asset(assetLinkAdmin().'/assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js')}}"></script>
+     <script src="{{asset(assetLinkAdmin().'/assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js')}}"></script>
+	 <script src="{{asset(assetLinkAdmin().'/assets/plugins/chartjs/js/chart.js')}}"></script>
+	 <script src="{{asset(assetLinkAdmin().'/assets/js/index.js')}}"></script>
+	 <!--app JS-->
+	 <script src="{{asset(assetLinkAdmin().'/assets/js/app.js')}}"></script>
+
+    <script src="{{asset(assetLinkAdmin().'/javascript/tag-editor.js')}}"></script>
     <script src="{{asset('tinymce/tinymce.min.js')}}"></script>
     
      <script>

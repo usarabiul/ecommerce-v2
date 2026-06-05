@@ -47,7 +47,7 @@ return new class extends Migration
             $table->string('mail_encryption',20)->nullable();
             $table->string('mail_from_name',100)->nullable();
             $table->string('mail_from_address',100)->nullable();
-            $table->boolean('mail_status')->default(0); // 0 = Inactive, 1 = Active
+            $table->boolean('mail_status')->default(0)->comment('0 = Inactive, 1 = Active');
             
             // SMS Configuration
             $table->string('sms_username',100)->nullable();
@@ -56,7 +56,7 @@ return new class extends Migration
             $table->text('sms_url_masking')->nullable();
             $table->text('sms_url_nonmasking')->nullable();
             $table->string('sms_type',100)->nullable();
-            $table->boolean('sms_status')->default(0);
+            $table->boolean('sms_status')->default(0)->comment('0 = Inactive, 1 = Active');
             
             // Social Login (Facebook, Twitter, Google)
             $table->string('fb_app_id',100)->nullable();
@@ -81,8 +81,8 @@ return new class extends Migration
             
             // Localization & Settings
             $table->string('currency',5)->default('BDT');
-            $table->integer('currency_decimal')->default(2);
-            $table->string('currency_position',10)->default('left');
+            $table->integer('currency_decimal')->default(2)->comment('0=0, 1=0.0, 2=0.00');
+            $table->string('currency_position',10)->default('left')->comment('left, right');
             $table->string('theme',100)->default('frontend');
             $table->string('adminTheme',100)->default('admin');
             $table->decimal('balance', 16, 2)->default(0.00);

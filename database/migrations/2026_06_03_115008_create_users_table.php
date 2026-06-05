@@ -34,7 +34,7 @@ return new class extends Migration
             
             // Statuses & Flags
             $table->string('login_status',50)->default('offline');
-            $table->string('status',50)->default('active'); // active, inactive, banned
+            $table->string('status',50)->default('active')->comment('active, inactive, banned');
             $table->boolean('featured')->default(0);
             $table->timestamp('email_verified_at')->nullable();
             
