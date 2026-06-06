@@ -3,64 +3,68 @@
 @endsection @push('css')
 <style type="text/css"></style>
 @endpush @section('contents')
-
-
-<header class="page-title-bar">
-    <div class="d-flex justify-content-between">
-        <h1 class="page-title">Dashboard</h1>
-    </div>
-</header>
-<div class="page-section">
-    <div class="section-block">
-        <div class="metric-row">
-            <div class="col-lg-12">
-                <div class="metric-row metric-flush">
-                    <div class="col">
-                        <a href="user-teams.html" class="metric metric-bordered align-items-center">
-                            <h2 class="metric-label">Products</h2>
-                            <p class="metric-value h3">
-                                <sub><i class="oi oi-people"></i></sub> <span class="value">{{number_format($reports['products'])}}</span>
-                            </p>
-                        </a>
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+    <div class="col">
+        <div class="card radius-10 border-start border-0 border-4 border-info">
+            <div class="card-body">
+                <div class="d-flex align-items-center">
+                    <div>
+                        <p class="mb-0 text-secondary">Total Orders </p>
+                        <h4 class="my-1 text-info">4805 </h4>
+                        <p class="mb-0 font-13">+2.5% from last week </p>
                     </div>
-                    <div class="col">
-                        <a href="user-projects.html" class="metric metric-bordered align-items-center">
-                            <h2 class="metric-label">Pages</h2>
-                            <p class="metric-value h3">
-                                <sub><i class="oi oi-fork"></i></sub> <span class="value">{{number_format($reports['blogs'])}}</span>
-                            </p>
-                        </a>
-                    </div>
-                    <div class="col">
-                        <a href="user-tasks.html" class="metric metric-bordered align-items-center">
-                            <h2 class="metric-label">Blogs</h2>
-                            <p class="metric-value h3">
-                                <sub><i class="fa fa-tasks"></i></sub> <span class="value">{{number_format($reports['pages'])}}</span>
-                            </p>
-                        </a>
-                    </div>
-                    <div class="col">
-                        <a href="user-tasks.html" class="metric metric-bordered align-items-center">
-                            <h2 class="metric-label">Users</h2>
-                            <p class="metric-value h3">
-                                <sub><i class="fa fa-tasks"></i></sub> <span class="value">{{number_format($reports['users'])}}</span>
-                            </p>
-                        </a>
-                    </div>
-                    <div class="col">
-                        <a href="user-tasks.html" class="metric metric-bordered align-items-center">
-                            <h2 class="metric-label">Orders</h2>
-                            <p class="metric-value h3">
-                                <sub><i class="fa fa-tasks"></i></sub> <span class="value">{{number_format($reports['orders'])}}</span>
-                            </p>
-                        </a>
+                    <div class="widgets-icons-2 rounded-circle bg-gradient-blues text-white ms-auto"><i class='bx bxs-cart'></i>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
+    <div class="col">
+        <div class="card radius-10 border-start border-0 border-4 border-danger">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <div>
+                    <p class="mb-0 text-secondary">Total Revenue </p>
+                    <h4 class="my-1 text-danger">$84,245 </h4>
+                    <p class="mb-0 font-13">+5.4% from last week </p>
+                </div>
+                <div class="widgets-icons-2 rounded-circle bg-gradient-burning text-white ms-auto"><i class='bx bxs-wallet'></i>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card radius-10 border-start border-0 border-4 border-success">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <div>
+                    <p class="mb-0 text-secondary">Bounce Rate </p>
+                    <h4 class="my-1 text-success">34.6% </h4>
+                    <p class="mb-0 font-13">-4.5% from last week </p>
+                </div>
+                <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto"><i class='bx bxs-bar-chart-alt-2'></i>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card radius-10 border-start border-0 border-4 border-warning">
+        <div class="card-body">
+            <div class="d-flex align-items-center">
+                <div>
+                    <p class="mb-0 text-secondary">Total Customers </p>
+                    <h4 class="my-1 text-warning">8.4K </h4>
+                    <p class="mb-0 font-13">+8.4% from last week </p>
+                </div>
+                <div class="widgets-icons-2 rounded-circle bg-gradient-orange text-white ms-auto"><i class='bx bxs-group'></i>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div> 
+    </div>
 @endsection 
 @push('js')
 <script>

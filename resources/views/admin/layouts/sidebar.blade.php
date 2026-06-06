@@ -1,7 +1,7 @@
 <div class="sidebar-wrapper" data-simplebar="true">
     <div class="sidebar-header">
         <div>
-            <img src="{{ asset('assets/images/logo-icon.png') }}" class="logo-icon" alt="logo icon" />
+            <img src="{{ asset(general()->favicon()) }}" class="logo-icon" alt="logo icon" />
         </div>
         <div>
             <h4 class="logo-text">Rocker</h4>
@@ -79,7 +79,7 @@
         <!-- Products -->
         <li class="{{ Request::is('admin/products*') ? 'mm-active' : '' }}">
             <a href="javascript:;" class="has-arrow">
-                <div class="parent-icon"><i class='bx bx-shopping-cart'></i></div>
+                <div class="parent-icon"><i class='bx bx-cart'></i></div>
                 <div class="menu-title">Products Lists</div>
             </a>
             <ul>
@@ -110,7 +110,7 @@
         <!-- POS Sale -->
         <li class="{{ Request::is('admin/pos-orders*') ? 'mm-active' : '' }}">
             <a href="{{ route('admin.posOrdersAction', 'sale') }}">
-                <div class="parent-icon"><i class='bx bx-cart-add'></i></div>
+                <div class="parent-icon"><i class='bx bx-cart'></i></div>
                 <div class="menu-title">POS Sale</div>
             </a>
         </li>

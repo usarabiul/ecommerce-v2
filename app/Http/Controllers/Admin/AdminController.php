@@ -98,6 +98,13 @@ class AdminController extends Controller
     public function myProfile(Request $r){
 
       $user =Auth::user();
+      return view(adminTheme().'users.myProfile',compact('user'));
+      
+    }
+    
+    public function editProfile(Request $r){
+
+      $user =Auth::user();
       if($r->isMethod('post')){
         if($r->actionType=='profile'){
           $check = $r->validate([
@@ -175,7 +182,7 @@ class AdminController extends Controller
         return back();
       }
         
-      return view(adminTheme().'users.myProfile',compact('user'));
+      return view(adminTheme().'users.editProfile',compact('user'));
       
     }
 

@@ -10,6 +10,29 @@ use App\Http\Controllers\Admin\AdminController;
 //Frontend Controller
 Route::get('/', [FrontendController::class, 'index'])->name('index');
 
+Route::get('/image-view',[FrontendController::class,'imageView'])->name('imageView');
+Route::get('/image/{template?}/{image?}',[FrontendController::class,'imageView2'])->name('imageView2');
+Route::get('/sitemap.xml',[FrontendController::class,'siteMapXml'])->name('siteMapXml');
+Route::get('/search',[FrontendController::class,'search'])->name('search');
+Route::post('/contact-mail',[FrontendController::class,'contactMail'])->name('contactMail');
+Route::post('/subscribe',[FrontendController::class,'subscribe'])->name('subscribe');
+Route::get('/switch/{lang?}',[FrontendController::class,'language'])->name('language');
+Route::get('/geo/filter/{id}',[FrontendController::class,'geo_filter'])->name('geo_filter');
+
+Route::get('/product/category/{slug}',[FrontendController::class,'productCategory'])->name('productCategory');
+Route::get('/product/brand/{slug}',[FrontendController::class,'productBrand'])->name('productBrand');
+Route::get('/product/{slug}',[FrontendController::class,'productView'])->name('productView');
+
+Route::get('/blog/category/{slug}',[FrontendController::class,'blogCategory'])->name('blogCategory');
+Route::get('/blog/author/{id}/{slug}',[FrontendController::class,'blogAuthor'])->name('blogAuthor');
+Route::get('/blog/tag/{slug}',[FrontendController::class,'blogTag'])->name('blogTag');
+Route::get('/blog/archives/{slug}',[FrontendController::class,'blogArchives'])->name('blogArchives');
+Route::get('/blog/search',[FrontendController::class,'blogSearch'])->name('blogSearch');
+Route::get('/blog/{slug}',[FrontendController::class,'blogView'])->name('blogView');
+Route::post('/blog-comments/{slug}',[FrontendController::class,'blogComments'])->name('blogComments');
+
+
+
 //Auth Controller
 Route::group(['middleware'=>['authCheck']], function(){
     Route::any('/login',[AuthController::class,'login'])->name('login');
@@ -35,7 +58,8 @@ Route::group(['prefix'=>'supplier', 'as'=>'business.','middleware'=>['auth','rol
 Route::group(['prefix'=>'admin', 'as'=>'admin.','middleware'=>['auth','role:admin','permission']], function(){
 
 Route::get('/dashboard',[AdminController::class,'dashboard'])->name('dashboard');
-Route::any('/my-profile',[AdminController::class,'myProfile'])->name('myProfile');
+Route::get('/my-profile',[AdminController::class,'myProfile'])->name('myProfile');
+Route::any('/edit-profile',[AdminController::class,'editProfile'])->name('editProfile');
 
 Route::get('/editor/{type}/{id}',[AdminController::class,'contentEditor'])->name('contentEditor');
 Route::any('/editor-action/{action}/{id?}',[AdminController::class,'contentEditorAction'])->name('contentEditorAction');
