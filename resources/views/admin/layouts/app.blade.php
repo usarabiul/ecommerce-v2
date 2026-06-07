@@ -34,7 +34,22 @@
 	 <link rel="stylesheet" href="{{asset(assetLinkAdmin().'/assets/css/header-colors.css')}}" />
 
     <style type="text/css">
-      
+      ul.statuslist {
+          text-align: right;
+      }
+
+      ul.statuslist li {
+          display: inline-block;
+      }
+
+      ul.statuslist li a {
+          border: 1px solid #d1cece;
+          padding: 3px 6px;
+          border-radius: 15px;
+          display: inline-block;
+          margin: 3px 1px;
+          font-size: 12px;
+      }
     </style>
 
      @stack('css')
@@ -700,9 +715,9 @@
       </div>
     
    <!-- Bootstrap JS -->
+	 <script src="{{asset(assetLinkAdmin().'/assets/js/jquery.min.js')}}"></script>
 	 <script src="{{asset(assetLinkAdmin().'/assets/js/bootstrap.bundle.min.js')}}"></script>
 	 <!--plugins-->
-	 <script src="{{asset(assetLinkAdmin().'/assets/js/jquery.min.js')}}"></script>
 	 <script src="{{asset(assetLinkAdmin().'/assets/plugins/simplebar/js/simplebar.min.js')}}"></script>
 	 <script src="{{asset(assetLinkAdmin().'/assets/plugins/metismenu/js/metisMenu.min.js')}}"></script>
 	 <script src="{{asset(assetLinkAdmin().'/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js')}}"></script>

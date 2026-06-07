@@ -4,7 +4,9 @@ $(function() {
 	
 // chart 1
 
-  var ctx = document.getElementById("chart1").getContext('2d');
+var chart1El = document.getElementById("chart1");
+if (chart1El) {
+  var ctx = chart1El.getContext('2d');
    
   var gradientStroke1 = ctx.createLinearGradient(0, 0, 0, 300);
       gradientStroke1.addColorStop(0, '#6078ea');  
@@ -40,28 +42,31 @@ $(function() {
             borderWidth: 0
           }]
         },
-		
+        
         options: {
-				  maintainAspectRatio: false,
+			  maintainAspectRatio: false,
           barPercentage: 0.5,
           categoryPercentage: 0.8,
-				  plugins: {
-					  legend: {
-						  display: false,
-					  }
-				  },
-				  scales: {
-					  y: {
-						  beginAtZero: true
-					  }
+			  plugins: {
+				  legend: {
+					  display: false,
+				  }
+			  },
+			  scales: {
+				  y: {
+					  beginAtZero: true
 				  }
 			  }
+		  }
       });
-	  
-	 
+}
+      
+     
 // chart 2
 
- var ctx = document.getElementById("chart2").getContext('2d');
+var chart2El = document.getElementById("chart2");
+if (chart2El) {
+  var ctx = chart2El.getContext('2d');
 
   var gradientStroke1 = ctx.createLinearGradient(0, 0, 0, 300);
       gradientStroke1.addColorStop(0, '#fc4a1a');
@@ -75,7 +80,7 @@ $(function() {
   var gradientStroke3 = ctx.createLinearGradient(0, 0, 0, 300);
       gradientStroke3.addColorStop(0, '#ee0979');
       gradientStroke3.addColorStop(1, '#ff6a00');
-	  
+  
 	var gradientStroke4 = ctx.createLinearGradient(0, 0, 0, 300);
       gradientStroke4.addColorStop(0, '#42e695');
       gradientStroke4.addColorStop(1, '#3bb2b8');
@@ -112,13 +117,13 @@ $(function() {
           
        }
       });
-
-   
+}
 
 // worl map
 
-jQuery('#geographic-map-2').vectorMap(
-{
+var $geoMap2 = jQuery('#geographic-map-2');
+if ($geoMap2.length && jQuery.fn.vectorMap) {
+  $geoMap2.vectorMap({
     map: 'world_mill_en',
     backgroundColor: 'transparent',
     borderColor: '#818181',
@@ -133,33 +138,35 @@ jQuery('#geographic-map-2').vectorMap(
       },
     markerStyle: {
       initial: {
-				r: 9,
-				'fill': '#fff',
-				'fill-opacity':1,
-				'stroke': '#000',
-				'stroke-width' : 5,
-				'stroke-opacity': 0.4
-                },
-                },
+        r: 9,
+        'fill': '#fff',
+        'fill-opacity':1,
+        'stroke': '#000',
+        'stroke-width' : 5,
+        'stroke-opacity': 0.4
+      }
+    },
     enableZoom: true,
     hoverColor: '#009efb',
     markers : [{
         latLng : [21.00, 78.00],
         name : 'Lorem Ipsum Dollar'
-      
       }],
     hoverOpacity: null,
     normalizeFunction: 'linear',
     scaleColors: ['#b6d6ff', '#005ace'],
     selectedColor: '#c9dfaf',
     selectedRegions: [],
-    showTooltip: true,
-});
+    showTooltip: true
+  });
+}
 
 
 // chart 3
 
- var ctx = document.getElementById('chart3').getContext('2d');
+var chart3El = document.getElementById('chart3');
+if (chart3El) {
+  var ctx = chart3El.getContext('2d');
 
   var gradientStroke1 = ctx.createLinearGradient(0, 0, 0, 300);
       gradientStroke1.addColorStop(0, '#00b09b');
@@ -201,12 +208,15 @@ jQuery('#geographic-map-2').vectorMap(
 				  }
 			  }
       });
+}
 
 
 
 // chart 4
 
-var ctx = document.getElementById("chart4").getContext('2d');
+var chart4El = document.getElementById("chart4");
+if (chart4El) {
+  var ctx = chart4El.getContext('2d');
 
   var gradientStroke1 = ctx.createLinearGradient(0, 0, 0, 300);
       gradientStroke1.addColorStop(0, '#ee0979');
@@ -257,9 +267,15 @@ var ctx = document.getElementById("chart4").getContext('2d');
 
 
 
+}
+
+
+
   // chart 5
 
-    var ctx = document.getElementById("chart5").getContext('2d');
+    var chart5El = document.getElementById("chart5");
+    if (chart5El) {
+      var ctx = chart5El.getContext('2d');
    
       var gradientStroke1 = ctx.createLinearGradient(0, 0, 0, 300);
       gradientStroke1.addColorStop(0, '#f54ea2');
@@ -309,6 +325,7 @@ var ctx = document.getElementById("chart4").getContext('2d');
 				  }
 			  }
       });
+    }
 
 
 

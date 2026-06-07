@@ -58,7 +58,7 @@ class AdminController extends Controller
     }
     
     public function dashboard(){
-        
+
         ///Reports  Summery Dashboard
         $productsTotal=Post::where('type',2)
         ->where('status','active')

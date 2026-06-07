@@ -1,8 +1,14 @@
 $(function() {
 	"use strict";
-	new PerfectScrollbar(".app-container"),
-	new PerfectScrollbar(".header-message-list"),
-	new PerfectScrollbar(".header-notifications-list"),
+	if (document.querySelector('.app-container') && window.PerfectScrollbar) {
+		new PerfectScrollbar('.app-container');
+	}
+	if (document.querySelector('.header-message-list') && window.PerfectScrollbar) {
+		new PerfectScrollbar('.header-message-list');
+	}
+	if (document.querySelector('.header-notifications-list') && window.PerfectScrollbar) {
+		new PerfectScrollbar('.header-notifications-list');
+	}
 
 
 	    $(".mobile-search-icon").on("click", function() {

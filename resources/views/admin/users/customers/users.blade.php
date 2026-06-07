@@ -7,29 +7,26 @@
 @endpush 
 @section('contents')
 
-
-<header class="page-title-bar">
-    <div class="d-md-flex align-items-md-start">
-        <div class="mr-sm-auto">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mt-1 p-0 mb-0">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Customer Users</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="btn-toolbar">
-            <button type="button" data-toggle="modal" data-target="#AddUser" class="btn btn-outline-success mr-2"><i class="fas fa-plus"></i> Add User</button>
-            <a href="{{route('admin.usersCustomer')}}" type="button" class="btn btn-primary"><i class="fas fa-spinner"></i></a>
+<div class="page-breadcrumb d-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Customer Users</div>
+    <div class="ms-auto">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary"><i class="bx bx-menu-alt-left"></i></button>
+            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#AddUser" ><i class="bx bx-plus"></i> Add User </a>
+                <a class="dropdown-item" href="{{route('admin.usersCustomer')}}"><i class="bx bx-refresh"></i> Reload</a>
+            </div>
         </div>
     </div>
-</header>
+</div>
 
     @include(adminTheme().'alerts')
     <div class="card">
         <div class="card-header" style="border-bottom: 1px solid #e3ebf3;">
-            <h4 class="card-title">Customer users List</h4>
+            <h4 class="card-title">Users List</h4>
         </div>
         <div class="card-content">
             <div class="card-body">
@@ -63,10 +60,7 @@
                             <button class="btn btn-primary rounded-0" onclick="return confirm('Are You Want To Action?')">Action</button>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        
-                    </div>
-                    <div class="col-md-4">
+                    <div class="col-md-8">
                         <ul class="statuslist">
                             <li><a href="{{route('admin.usersCustomer')}}">All ({{$totals->total}})</a></li>
                             <li><a href="{{route('admin.usersCustomer',['status'=>'active'])}}">Active ({{$totals->active}})</a></li>

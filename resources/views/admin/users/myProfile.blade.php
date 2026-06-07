@@ -11,6 +11,7 @@
 @endpush 
 @section('contents')
 
+
 <div class="page-breadcrumb d-flex align-items-center mb-3">
     <div class="breadcrumb-title pe-3">My Profile</div>
     <div class="ms-auto">
@@ -21,17 +22,13 @@
             </button>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
                 <a class="dropdown-item" href="{{route('admin.editProfile')}}"><i class="bx bx-edit"></i> Edit </a>
-                <a class="dropdown-item" href="{{route('admin.myProfile')}}"><i class="bx bx-refresh"></i> reload</a>
-                <!-- <a class="dropdown-item" href="javascript:;">Something else here </a>
-                <div class="dropdown-divider"></div>	 
-                <a class="dropdown-item" href="javascript:;">Separated link </a> -->
+                <a class="dropdown-item" href="{{route('admin.myProfile')}}"><i class="bx bx-refresh"></i> Reload</a>
             </div>
         </div>
     </div>
 </div>
 
-
-    @include(adminTheme().'alerts')
+@include(adminTheme().'alerts')
     <div class="row">
         
         <div class="col-md-5">
