@@ -12,7 +12,7 @@
     <div class="ms-auto">
         <div class="btn-group">
             <button type="button" class="btn btn-primary"><i class="bx bx-menu-alt-left"></i></button>
-            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split px-3" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="visually-hidden">Toggle Dropdown </span>
             </button>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
@@ -25,9 +25,6 @@
 
     @include(adminTheme().'alerts')
     <div class="card">
-        <div class="card-header" style="border-bottom: 1px solid #e3ebf3;">
-            <h4 class="card-title">Users List</h4>
-        </div>
         <div class="card-content">
             <div class="card-body">
                 <form action="{{route('admin.usersCustomer')}}">
@@ -62,68 +59,77 @@
                     </div>
                     <div class="col-md-8">
                         <ul class="statuslist">
-                            <li><a href="{{route('admin.usersCustomer')}}">All ({{$totals->total}})</a></li>
-                            <li><a href="{{route('admin.usersCustomer',['status'=>'active'])}}">Active ({{$totals->active}})</a></li>
-                            <li><a href="{{route('admin.usersCustomer',['status'=>'inactive'])}}">Inactive ({{$totals->inactive}})</a></li>
+                            <li><a href="{{route('admin.usersCustomer')}}" class="{{ !request()->has('status') ? 'active' : '' }}">All ({{$totals->total}})</a></li>
+                            <li><a href="{{route('admin.usersCustomer',['status'=>'active'])}}" class="{{ request()->get('status') === 'active' ? 'active' : '' }}">Active ({{$totals->active}})</a></li>
+                            <li><a href="{{route('admin.usersCustomer',['status'=>'inactive'])}}" class="{{ request()->get('status') === 'inactive' ? 'active' : '' }}">Inactive ({{$totals->inactive}})</a></li>
                         </ul>
                     </div>
                 </div>
 
                 <div class="table-responsive" style="min-height:300px;">
-                    <table class="table  table-hover">
-                        <thead  class="thead-light">
+                    <table class="table mb-0  table-hover">
+                        <thead  class="table-light">
                             <tr>
-                                <th style="min-width: 100px; width: 100px;">
+                                <th style="min-width: 60px; width: 60px;">
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input checkbox"  id="checkall" >  <label class="custom-control-label" for="checkall">All <span class="checkCounter"></span> </label>
                                     </div>
                                 </th>
-                                <th style="min-width: 100px; width: 100px;">Image</th>
+                                <th style="min-width: 80px; width: 80px;text-align: center;">Image</th>
                                 <th style="min-width: 200px; width: 200px;">Name</th>
-                                <th style="min-width: 150px;">Email</th>
-                                <th style="min-width: 80px;">Status</th>
-                                <th style="min-width: 100px;">Join Date</th>
+                                <th style="min-width: 150px;">Email/Mobile</th>
+                                <th style="min-width: 150px;">Address</th>
+                                <th style="min-width: 80px;width: 80px;">Status</th>
+                                <th style="min-width: 100px;width:180px;">Join Date</th>
                                 <th style="min-width: 80px; width: 80px;">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($users as $i=>$user)
+                            @forelse($users as $i=>$user)
                             <tr>
                                 <td>
-                                    @if($user->id==Auth::id()) @else
+                                    @if($user->id!=Auth::id()) 
                                     <div class="custom-control custom-control-inline custom-control-nolabel custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input checkbox" name="checkid[]" value="{{$user->id}}" id="ckb1">  <label class="custom-control-label" for="ckb1">ID </label>
+                                        <input type="checkbox" class="custom-control-input checkbox" name="checkid[]" value="{{$user->id}}" id="ckb1">  <label class="custom-control-label" for="ckb1">{{ $users->firstItem() + $i }} </label>
                                     </div>
                                     @endif
-                                    {{$users->currentpage()==1?$i+1:$i+($users->perpage()*($users->currentpage() - 1))+1}}
                                 </td>
                                 <td style="padding: 0 3px; text-align: center;">
-                                    <span>
-                                        <img src="{{asset($user->image())}}" style="max-width: 60px; max-height: 50px;" />
-                                    </span>
+                                    <img src="{{asset($user->image())}}" style="max-width: 50px; max-height: 50px;" />
                                 </td>
                                 <td><a href="{{route('admin.usersCustomerAction',['edit',$user->id])}}" class="invoice-action-view mr-1">{{$user->name}}</a></td>
-                                <td>{{$user->email}}</td>
+                                <td>{{$user->email ?? $user->mobile}}</td>
+                                <td>{{$user->fullAddress()}}</td>
                                 <td>
-                                    @if($user->status)
-                                    <span class="badge badge-success">Active </span>
+                                    @if($user->status=='active')
+                                    <span class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">Active </span>
                                     @else
-                                    <span class="badge badge-danger">Inactive </span>
+                                    <span class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3">Inactive </span>
                                     @endif
                                 </td>
                                 <td>{{$user->created_at->format('d M Y h:i A')}}</td>
-                                <td style="text-align:center;">
+                                <td style="text-align:center;padding: 3px;">
                                     <div class="dropdown">
-                                        <button type="button" class="btn btn-success btn-ico" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                        <div class="dropdown-arrow"></div>
-                                            <a href="{{route('admin.usersCustomerAction',['edit',$user->id])}}" class="dropdown-item"><i class="fa fa-edit"></i> Edit </a>
-                                            <a href="{{route('admin.usersCustomerAction',['delete',$user->id])}}" onclick="return confirm('Are You Want To Delete')" class="dropdown-item"><i class="fa fa-trash"></i> Delete </a>
+                                            <button type="button" class="btn btn-primary split-bg-primary" data-bs-toggle="dropdown">	
+                                                <span class="bx bx-dots-vertical"></span>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                                <a class="dropdown-item" href="{{route('admin.usersCustomerAction',['view',$user->id])}}"><i class="bx bxs-show"></i> View </a>
+                                                <a class="dropdown-item" href="{{route('admin.usersCustomerAction',['edit',$user->id])}}"><i class="bx bxs-edit"></i> Edit </a>
+                                                @if($user->id!=Auth::id()) 
+                                                <a class="dropdown-item text-danger" href="{{route('admin.usersCustomerAction',['delete',$user->id])}}" onclick="return confirm('Are you sure you want to delete this user?')">
+                                                    <i class="bx bxs-trash"></i> Delete
+                                                </a>
+                                                @endif
+                                            </div>
                                         </div>
-                                    </div>
                                 </td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="9" style="text-align: center;">No Users Found</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

@@ -1637,6 +1637,10 @@ class AdminController extends Controller
               $q->orWhere('email','LIKE','%'.$r->search.'%');
               $q->orWhere('mobile','LIKE','%'.$r->search.'%');
           }
+
+          if($r->status){
+              $q->where('status',$r->status);
+            }
           
           if($r->startDate || $r->endDate)
           {
@@ -1656,18 +1660,14 @@ class AdminController extends Controller
           }
   
       })
-      ->select(['id','permission_id','name','email','mobile','created_at','addedby_id','status'])
-        ->paginate(25)->appends([
-          'search'=>$r->search,
-          'startDate'=>$r->startDate,
-          'endDate'=>$r->endDate,
-        ]);
+      ->select(['id','permission_id','name','email','mobile','address_line1','division','district','city','postal_code','created_at','addedby_id','status'])
+        ->paginate(25)->appends($r->all());
 
       //Total Count Results
-      $totals = DB::table('users')->whereIn('status',[0,1])
-      ->selectRaw('count(*) as total')
-      ->selectRaw("count(case when status = 1 then 1 end) as active")
-      ->selectRaw("count(case when status = 0 then 1 end) as inactive")
+      $totals = DB::table('users')
+      ->selectRaw('COUNT(*) as total')
+      ->selectRaw("SUM(status = 'active') as active")
+      ->selectRaw("SUM(status = 'inactive') as inactive")
       ->first();
   
       return view(adminTheme().'users.customers.users',compact('users','totals'));
@@ -1700,12 +1700,16 @@ class AdminController extends Controller
         Session()->flash('error','This User Are Not Found');
         return redirect()->route('admin.usersCustomer');
       }
+
+      if($action=='view'){
+        return view(adminTheme().'users.customers.viewUser',compact('user'));
+      }
   
       //Update User Profile Start
       if($action=='update' && $r->isMethod('post')){
 
           $check = $r->validate([
-                'name' => 'required|max:100|unique:users,name,'.$user->id,
+                'name' => 'required|max:100',
                 'email' => 'required|max:100|unique:users,email,'.$user->id,
                 'mobile' => 'nullable|max:20|unique:users,mobile,'.$user->id,
                 'gender' => 'nullable|max:10',
@@ -1727,7 +1731,11 @@ class AdminController extends Controller
           $user->district =$r->district;
           $user->city =$r->city;
           $user->postal_code =$r->postal_code;
-          $user->created_at =$r->created_at?:Carbon::now();
+
+          $createDate = $r->created_at? Carbon::parse($r->created_at . ' ' . now()->format('H:i:s')): now();
+          if (!$createDate->isSameDay(now())) {
+              $user->created_at =$createDate;
+          }
     
           ///////Image UploadStart////////////
           if($r->hasFile('image')){
@@ -1741,7 +1749,7 @@ class AdminController extends Controller
           }
           ///////Image Upload End////////////
     
-          $user->status=$r->status?true:false;
+          $user->status=$r->status?'active':'inactive';
           $user->save();
     
           Session()->flash('success','Your Updated Are Successfully Done!');

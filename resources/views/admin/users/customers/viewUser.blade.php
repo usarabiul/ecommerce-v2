@@ -1,29 +1,45 @@
-@extends(adminTheme().'layouts.app') 
+@extends(adminTheme().'layouts.app')
 @section('title')
-<title>{{websiteTitle('My Profile')}}</title>
-@endsection 
+<title>{{websiteTitle('User Profile')}}</title>
+@endsection
+
 @push('css')
-
 <style type="text/css">
-
+    .showPassword {
+    right: 0 !important;
+    cursor: pointer;
+    }
+    .ProfileImage{
+        max-width: 64px;
+        max-height: 64px;
+    }
 </style>
-@endpush 
+@endpush
 @section('contents')
 
 
 <div class="page-breadcrumb d-flex align-items-center mb-3">
-    <div class="breadcrumb-title pe-3">My Profile</div>
+    <div class="breadcrumb-title pe-3">Edit Profile</div>
     <div class="ms-auto">
-        <a href="{{route('admin.editProfile')}}" class="btn btn-primary"><i class="bx bx-edit"></i> Edit </a>
+        <div class="btn-group">
+            <a href="{{route('admin.usersCustomer')}}" type="button" class="btn btn-primary">Back</a>
+            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                <a class="dropdown-item" href="{{route('admin.usersCustomerAction',['edit',$user->id])}}"><i class="bx bx-edit"></i> Edit </a>
+                <a class="dropdown-item" href="{{route('admin.usersCustomerAction',['view',$user->id])}}"><i class="bx bx-refresh"></i> reload</a>
+            </div>
+        </div>
     </div>
 </div>
-
+	
 @include(adminTheme().'alerts')
-    <div class="row">
+<div class="row">
         <div class="col-md-5">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">My Profile</h4>
+                    <h4 class="card-title">View Profile</h4>
                 </div>
                 <div class="card-content">
                     <div class="card-body">
@@ -95,9 +111,11 @@
         </div>
     </div>
 
-@endsection 
+
+
+@endsection
 @push('js')
-<script type="text/javascript">
-    // Custom JavaScript can be added here if needed
-</script>
+
+
+
 @endpush

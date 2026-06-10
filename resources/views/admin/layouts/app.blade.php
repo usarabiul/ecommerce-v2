@@ -43,12 +43,29 @@
       }
 
       ul.statuslist li a {
-          border: 1px solid #d1cece;
-          padding: 3px 6px;
+          border: 1px solid #e8e8ef;
+          padding: 5px 10px;
           border-radius: 15px;
           display: inline-block;
           margin: 3px 1px;
           font-size: 12px;
+      }
+      ul.statuslist li a.active {
+          background: #e8e8ef;
+      }
+
+      ul.statuslist li a:hover {
+          background: #f1f1f3;
+      }
+      .card-header {
+          border-bottom: 1px solid #e3ebf3;
+      }
+
+      hr{
+          border-color: #aaaaac;
+      }
+      tbody, td, tfoot, th, thead, tr {
+          vertical-align: middle;
       }
     </style>
 
@@ -58,8 +75,7 @@
 	    <div class="wrapper">
         
         @include(adminTheme().'layouts.sidebar')
-
-          <header>
+           <header>
             <div class="topbar d-flex align-items-center">
               <nav class="navbar navbar-expand gap-3">
                 <div class="mobile-toggle-menu">
@@ -697,9 +713,6 @@
 		   </div>
 		 </div>
 	   </div>
-
-          
-
         <div class="page-wrapper">
             <div class="page-content">
             @yield('contents')
@@ -733,6 +746,18 @@
     
      <script>
       $(document).ready(function(){
+
+       $(document).on('change', '.uploadImage', function () {
+            let input = this;
+            let targetClass = $(this).data('name');
+            if (input.files && input.files[0]) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    $('.' + targetClass).attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        });
 
         $('.slugEdit').click(function(){
             var span = $(this).find('span');
@@ -827,8 +852,6 @@
                     $('input.password').prop('type','password');
                     $(this).empty().append('<i class="bx bx-hide"></i>');
                 }
-
-                alert('ok');
           });
 
           $("#division").on("change", function(){
