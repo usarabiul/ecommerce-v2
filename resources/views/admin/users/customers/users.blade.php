@@ -16,7 +16,7 @@
                 <span class="visually-hidden">Toggle Dropdown </span>
             </button>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
-                <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#AddUser" ><i class="bx bx-plus"></i> Add User </a>
+                <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#AddUser" ><i class="bx bx-plus"></i> Add User </a>
                 <a class="dropdown-item" href="{{route('admin.usersCustomer')}}"><i class="bx bx-refresh"></i> Reload</a>
             </div>
         </div>
@@ -80,7 +80,7 @@
                                 <th style="min-width: 150px;">Email/Mobile</th>
                                 <th style="min-width: 150px;">Address</th>
                                 <th style="min-width: 80px;width: 80px;">Status</th>
-                                <th style="min-width: 100px;width:180px;">Join Date</th>
+                                <th style="min-width: 180px;width:180px;">Join Date</th>
                                 <th style="min-width: 80px; width: 80px;">Action</th>
                             </tr>
                         </thead>
@@ -110,19 +110,19 @@
                                 <td>{{$user->created_at->format('d M Y h:i A')}}</td>
                                 <td style="text-align:center;padding: 3px;">
                                     <div class="dropdown">
-                                            <button type="button" class="btn btn-primary split-bg-primary" data-bs-toggle="dropdown">	
-                                                <span class="bx bx-dots-vertical"></span>
-                                            </button>
-                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
-                                                <a class="dropdown-item" href="{{route('admin.usersCustomerAction',['view',$user->id])}}"><i class="bx bxs-show"></i> View </a>
-                                                <a class="dropdown-item" href="{{route('admin.usersCustomerAction',['edit',$user->id])}}"><i class="bx bxs-edit"></i> Edit </a>
-                                                @if($user->id!=Auth::id()) 
-                                                <a class="dropdown-item text-danger" href="{{route('admin.usersCustomerAction',['delete',$user->id])}}" onclick="return confirm('Are you sure you want to delete this user?')">
-                                                    <i class="bx bxs-trash"></i> Delete
-                                                </a>
-                                                @endif
-                                            </div>
+                                        <button type="button" class="btn btn-primary split-bg-primary" data-bs-toggle="dropdown">	
+                                            <span class="bx bx-dots-vertical"></span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                            <a class="dropdown-item" href="{{route('admin.usersCustomerAction',['view',$user->id])}}"><i class="bx bxs-show"></i> View </a>
+                                            <a class="dropdown-item" href="{{route('admin.usersCustomerAction',['edit',$user->id])}}"><i class="bx bxs-edit"></i> Edit </a>
+                                            @if($user->id!=Auth::id()) 
+                                            <a class="dropdown-item text-danger" href="{{route('admin.usersCustomerAction',['delete',$user->id])}}" onclick="return confirm('Are you sure you want to delete this user?')">
+                                                <i class="bx bxs-trash"></i> Delete
+                                            </a>
+                                            @endif
                                         </div>
+                                    </div>
                                 </td>
                             </tr>
                             @empty
@@ -149,34 +149,28 @@
 	 	<form action="{{route('admin.usersCustomerAction','create')}}" method="post">
 	   		@csrf
 	   <div class="modal-header">
-		 <h4 class="modal-title">Add User</h4>
-		 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-		   <span aria-hidden="true">&times; </span>
-		 </button>
+		 <h5 class="modal-title">Add User</h5>
+         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	   </div>
 	   <div class="modal-body">
-	   		<div class="form-group">
-			 <label for="name">Name* </label>
-             <div class="controls">
-                 <input type="text" class="form-control {{$errors->has('name')?'error':''}}" name="name" placeholder="Enter Name" required="">
+	   		<div class="form-group mb-3">
+			    <label class="form-label">Name* </label>
+                <input type="text" class="form-control {{$errors->has('name')?'error':''}}" name="name" placeholder="Enter Name" required="">
 				@if ($errors->has('name'))
-				<p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('name') }}</p>
+				<div class="invalid-feedback">{{ $errors->first('name') }}</div>
 				@endif
-				</div>
          	</div>
-			 <div class="form-group">
-				<label for="name">Email* </label>
-				<div class="controls">
-					<input type="email" class="form-control {{$errors->has('email')?'error':''}}" name="email" placeholder="Enter Email" required="">
-					@if ($errors->has('email'))
-					<p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('email') }}</p>
-					@endif
-				</div>
+			 <div class="form-group mb-3">
+				<label class="form-label">Email or Mobile* </label>
+                <input type="text" class="form-control {{$errors->has('email_mobile')?'error':''}}" name="email_mobile" placeholder="Enter Email or Mobile" required="">
+                @if ($errors->has('email_mobile'))
+                <div class="invalid-feedback">{{ $errors->first('email_mobile') }}</div>
+                @endif
          	</div>
 	   </div>
 	   <div class="modal-footer">
-		 <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close </button>
-		 <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Add User</button>
+		 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close </button>
+		 <button type="submit" class="btn btn-primary"> Add User</button>
 	   </div>
 	   </form>
 	 </div>

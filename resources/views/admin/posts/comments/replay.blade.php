@@ -1,4 +1,4 @@
-@extends(general()->adminTheme.'.layouts.app')
+@extends(adminTheme().'layouts.app')
 @section('title')
 <title>{{websiteTitle('Comment Replay')}}</title>
 @endsection
@@ -47,7 +47,7 @@
  <div class="content-body">
  	<!-- Basic Elements start -->
 	 <section class="basic-elements">
-	 	@include(general()->adminTheme.'.alerts')
+	 	@include(adminTheme().'alerts')
 	     <div class="row">
 	        <div class="col-md-6">
 	         		

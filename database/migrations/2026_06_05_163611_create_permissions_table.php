@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('permissions', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100)->nullable();
-            $table->json('permissions')->nullable();
+            $table->json('permission')->nullable();
             $table->string('status', 20)->nullable()->default('active')->comment('active, inactive');
             $table->integer('addedby_id')->nullable();
             $table->integer('editedby_id')->nullable();
@@ -24,7 +24,7 @@ return new class extends Migration
         // Insert default permissions
         DB::table('permissions')->insert([
             'name' => 'Super Admin',
-            'permissions' => null,
+            'permission' => null,
             'status' => 'active',
             'addedby_id' => 1
         ]);

@@ -2,25 +2,25 @@
 <title>{{websiteTitle('Post Categories')}}</title>
 @endsection @push('css')
 <style type="text/css"></style>
-@endpush @section('contents')
+@endpush 
 
-<header class="page-title-bar">
-    <div class="d-md-flex align-items-md-start">
-        <div class="mr-sm-auto">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mt-1 p-0 mb-0">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Categories List</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="btn-toolbar">
-            <a href="{{route('admin.postsCategoriesAction','create')}}" type="button" class="btn btn-outline-success mr-2"><i class="fas fa-plus"></i> Add Category</a>
-            <a href="{{route('admin.postsCategories')}}" type="button" class="btn btn-primary"><i class="fas fa-spinner"></i></a>
+@section('contents')
+
+<div class="page-breadcrumb d-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Categories List</div>
+    <div class="ms-auto">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary"><i class="bx bx-menu-alt-left"></i></button>
+            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                <a class="dropdown-item" href="{{route('admin.postsCategoriesAction','create')}}" ><i class="bx bx-plus"></i> Add Category </a>
+                <a class="dropdown-item" href="{{route('admin.postsCategories')}}"><i class="bx bx-refresh"></i> Reload</a>
+            </div>
         </div>
     </div>
-</header>
+</div>
 
 @include(adminTheme().'alerts')
 
@@ -59,7 +59,7 @@
                 </div>
                 <div class="table-responsive" style="min-height:300px;" >
                     <table class="table table-hover">
-                        <thead class="thead-light" >
+                        <thead class="table-light" >
                             <tr>
                                 <th style="min-width: 100px;width:100px;">
                                     <div class="custom-control custom-checkbox">
@@ -73,7 +73,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($categories as $i=>$category)
+                            @forelse($categories as $i=>$category)
                             <tr>
                                 <td>
                                     <div class="custom-control custom-control-inline custom-control-nolabel custom-checkbox">
@@ -84,19 +84,19 @@
                                 <td>
                                     <a href="{{route('blogCategory',$category->slug?:'no-title')}}" target="_blank">{{$category->name}}</a><br />
                                     @if($category->status=='active')
-                                    <span class="badge badge-success">Active </span>
+                                    <span class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">Active </span>
                                     @elseif($category->status=='inactive')
-                                    <span class="badge badge-danger">Inactive </span>
+                                    <span class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3">Inactive </span>
                                     @else
-                                    <span class="badge badge-danger">Draft </span>
+                                    <span class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3">Draft </span>
                                     @endif
 
                                     @if($category->featured==true)
-                                    <span><i class="fa fa-star" style="color: #faca51;"></i></span>
+                                    <span><i class="bx bx-star" style="color: #faca51;"></i></span>
                                     @endif
-                                    <span style="color: #ccc;"><i class="fa fa-calendar" style="color: #1ab394;"></i> {{$category->created_at->format('d-m-Y')}}</span>
+                                    <span style="color: #ccc;"><i class="bx bx-calendar" style="color: #1ab394;"></i> {{$category->created_at->format('d-m-Y')}}</span>
                                     <span style="color: #ccc;">
-                                        <i class="fa fa-user" style="color: #1ab394;"></i>
+                                        <i class="bx bx-user" style="color: #1ab394;"></i>
                                         {{Str::limit($category->user?$category->user->name:'No Author',15)}}
                                     </span>
                                 </td>
@@ -104,24 +104,31 @@
                                     @if($category->parent)
                                     <span>{{$category->parent->name}}</span>
                                     @else
-                                    <span class="badge badge-primary">PARENT CTG</span>
+                                    <span class="badge rounded-pill text-primary bg-light-primary p-2 text-uppercase px-3">PARENT CTG</span>
                                     @endif
                                 </td>
                                 <td style="padding: 5px; text-align: center;">
                                     <img src="{{asset($category->image())}}" style="max-width: 80px; max-height: 50px;" />
                                 </td>
-                                <td style="text-align:center;">
+                                <td style="text-align:center;padding: 3px;">
                                     <div class="dropdown">
-                                        <button type="button" class="btn btn-success btn-ico" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                        <div class="dropdown-arrow"></div>
-                                            <a href="{{route('admin.postsCategoriesAction',['edit',$category->id])}}" class="dropdown-item"><i class="fa fa-edit"></i> Edit </a>
-                                            <a href="{{route('admin.postsCategoriesAction',['delete',$category->id])}}" onclick="return confirm('Are You Want To Delete')" class="dropdown-item"><i class="fa fa-trash"></i> Delete </a>
+                                        <button type="button" class="btn btn-primary split-bg-primary" data-bs-toggle="dropdown">	
+                                            <span class="bx bx-dots-vertical"></span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                            <a class="dropdown-item" href="{{route('admin.postsCategoriesAction',['edit',$category->id])}}"><i class="bx bxs-edit"></i> Edit </a>
+                                            <a class="dropdown-item text-danger" href="{{route('admin.postsCategoriesAction',['delete',$category->id])}}" onclick="return confirm('Are you sure you want to delete this category?')">
+                                                <i class="bx bxs-trash"></i> Delete
+                                            </a>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="5" style="text-align: center;">No Category Found</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                     {{$categories->links('pagination')}}

@@ -1,4 +1,4 @@
-@extends(general()->adminTheme.'.layouts.app')
+@extends(adminTheme().'layouts.app')
 @section('title')
 <title>{{websiteTitle('Post Comments List')}}</title>
 @endsection
@@ -18,23 +18,15 @@
 @endpush
 @section('contents')
 
-<header class="page-title-bar">
-    <div class="d-md-flex align-items-md-start">
-        <div class="mr-sm-auto">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mt-1 p-0 mb-0">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Comments List</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="btn-toolbar">
-            <a href="{{route('admin.postsCommentsAll')}}" type="button" class="btn btn-primary"><i class="fas fa-spinner"></i></a>
-        </div>
+<div class="page-breadcrumb d-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Comments List</div>
+    <div class="ms-auto">
+        <a href="{{route('admin.postsCommentsAll')}}" class="btn btn-primary"><i class="bx bx-refresh"></i> Reload
+	</a>
     </div>
-</header>
+</div>
 
-@include(general()->adminTheme.'.alerts')
+@include(adminTheme().'alerts')
 <div class="card">
 	<div class="card-header " style="border-bottom: 1px solid #e3ebf3;">
 		<h4 class="card-title">Comments List</h4>
@@ -71,7 +63,7 @@
 
 
 			<table class="table table-hover" >
-				<thead class="thead-light">
+				<thead class="table-light">
 					<tr>
 						<th width="5%"></th>
 						<th width="20%">Author</th>
@@ -81,7 +73,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach($comments as $i=>$comment)
+
+					@forelse($comments as $i=>$comment)
 					<tr class="{{$comment->status=='inactive'?'inactive':''}}">
 						<td>
 							<input class="checkbox" type="checkbox" name="checkid[]" value="{{$comment->id}}"> 
@@ -132,7 +125,11 @@
 							<span>{{$comment->created_at->format('d-m-Y h:i A')}}</span>       
 						</td>
 					</tr>
-					@endforeach
+					@empty
+					<tr>
+						<td colspan="5" style="text-align: center;">No Comment Found</td>
+					</tr>
+					@endforelse
 				</tbody>
 			</table>
 			{{$comments->links('pagination')}}

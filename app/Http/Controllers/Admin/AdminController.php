@@ -573,27 +573,6 @@ class AdminController extends Controller
         $page->editedby_id =Auth::id();
         $page->save();
         
-        //Gallery posts
-        if($r->galleries){
-
-          $page->postTags()->whereNotIn('reff_id',$r->galleries)->delete();
-
-          for ($i=0; $i < count($r->galleries); $i++) {
-            $tag = $page->postTags()->where('reff_id',$r->galleries[$i])->first();
-
-              if($tag){}else{
-              $tag =new PostAttribute();
-              $tag->type=2;
-              $tag->src_id=$page->id;
-              $tag->reff_id=$r->galleries[$i];
-              }
-              $tag->save();
-         }
-       }else{
-        $page->postTags()->delete();
-       }
-        
-        
         Session()->flash('success','Your Are Successfully Done');
         return redirect()->back();
 
@@ -601,9 +580,6 @@ class AdminController extends Controller
 
       if($action=='delete'){
         
-        //Page Extra Data Delete
-        PostExtra::where('type',0)->where('src_id',$page->id)->delete();
-
         //Page Media File Delete
         $medies =Media::where('src_type',1)->where('src_id',$page->id)->get();
         foreach ($medies as  $media) {
@@ -617,16 +593,9 @@ class AdminController extends Controller
         $page->delete();
         Session()->flash('success','Your Are Successfully Done');
         return redirect()->back();
-
       }
 
-      $extraDatas=PostExtra::where('src_id',$id)->get();
-      
-      $galleries=Attribute::latest()->where('type',4)->where('status','<>','temp')->where('parent_id',null)
-      ->select(['id','name'])
-      ->get();
-
-      return view(adminTheme().'pages.pageEdit',compact('page','extraDatas','galleries'));
+      return view(adminTheme().'pages.pageEdit',compact('page'));
   }
 
 
@@ -1405,6 +1374,10 @@ class AdminController extends Controller
               $q->orWhere('mobile','LIKE','%'.$r->search.'%');
           }
 
+          if($r->status){
+             $q->where('status',$r->status); 
+          }
+
           if($r->role){
              $q->where('permission_id',$r->role);
           }
@@ -1435,10 +1408,10 @@ class AdminController extends Controller
       ]);
 
       //Total Count Results
-      $totals = DB::table('users')->whereIn('status',[0,1])->where('admin',true)
-      ->selectRaw('count(*) as total')
-      ->selectRaw("count(case when status = 1 then 1 end) as active")
-      ->selectRaw("count(case when status = 0 then 1 end) as inactive")
+      $totals = DB::table('users')->where('admin',true)
+      ->selectRaw('COUNT(*) as total')
+      ->selectRaw("SUM(status = 'active') as active")
+      ->selectRaw("SUM(status = 'inactive') as inactive")
       ->first();
       
       $roles =Permission::latest()->where('status','active')->get();
@@ -1485,6 +1458,11 @@ class AdminController extends Controller
       if(!$user){
         Session()->flash('error','This Admin User Are Not Found');
         return redirect()->route('admin.usersAdmin');
+      }
+      
+      if($action=='view'){
+
+          return view(adminTheme().'users.admins.viewUser',compact('user'));
       }
   
         //Update User Profile Start
@@ -1587,7 +1565,7 @@ class AdminController extends Controller
       if($r->action){
         if($r->checkid){
   
-        $datas=User::latest()->whereIn('status',[0,1])->whereIn('id',$r->checkid)->get();
+        $datas=User::latest()->whereIn('id',$r->checkid)->get();
   
         foreach($datas as $data){
   
@@ -1629,7 +1607,7 @@ class AdminController extends Controller
   
       //Filter Action End
   
-      $users =User::latest()->whereIn('status',[0,1])
+      $users =User::latest()
       ->where(function($q) use($r) {
   
           if($r->search){
@@ -1677,21 +1655,43 @@ class AdminController extends Controller
     public function usersCustomerAction(Request $r,$action,$id=null){
        
       //Add New User Start
-      if($action=='create' && $r->isMethod('post')){
+      if($action == 'create' && $r->isMethod('post')){
+    
+        $r->validate([
+            'name' => 'required|string|max:255',
+            'email_mobile' => [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $exists = User::where('email', $value)->orWhere('mobile', $value)->exists();
+                    if ($exists) {
+                        $fail('The email or mobile number has already been registered.');
+                    }
+                },
+            ],
+        ]);
 
-        $user =User::where('email',$r->email)->orWhere('name',$r->name)->first();
+        $user = User::where('email', $r->email_mobile)
+                    ->orWhere('mobile', $r->email_mobile)
+                    ->first();
+                    
         if(!$user){
-          $password=Str::random(8);
-          $user =new User();
-          $user->name =$r->name;
-          $user->email =$r->email;
-          $user->password_show=$password;
-          $user->password=Hash::make($password);
-          $user->save();
+            $password = Str::random(8);
+            $user = new User();
+            $user->name = $r->name;
+            
+            $user->email = $r->email_mobile;
+            $user->mobile = $r->email_mobile;
+            
+            $user->password_show = $password;
+            $user->password = Hash::make($password);
+            $user->save();
+            
+            return redirect()->route('admin.usersCustomerAction', ['edit', $user->id])
+                            ->with('success', 'User created successfully.');
         }
         
-        return redirect()->route('admin.usersCustomerAction',['edit',$user->id]);
-      }
+        return redirect()->route('admin.usersCustomerAction', ['edit', $user->id]);
+    }
       //Add New User End
       
       

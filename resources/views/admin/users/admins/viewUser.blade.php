@@ -22,13 +22,13 @@
     <div class="breadcrumb-title pe-3">View Profile</div>
     <div class="ms-auto">
         <div class="btn-group">
-            <a href="{{route('admin.usersCustomer')}}" type="button" class="btn btn-primary">Back</a>
+            <a href="{{route('admin.usersAdmin')}}" type="button" class="btn btn-primary">Back</a>
             <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split px-3" data-bs-toggle="dropdown" aria-expanded="false">
                 <span class="visually-hidden">Toggle Dropdown </span>
             </button>
             <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
-                <a class="dropdown-item" href="{{route('admin.usersCustomerAction',['edit',$user->id])}}"><i class="bx bx-edit"></i> Edit </a>
-                <a class="dropdown-item" href="{{route('admin.usersCustomerAction',['view',$user->id])}}"><i class="bx bx-refresh"></i> reload</a>
+                <a class="dropdown-item" href="{{route('admin.usersAdminAction',['edit',$user->id])}}"><i class="bx bx-edit"></i> Edit </a>
+                <a class="dropdown-item" href="{{route('admin.usersAdminAction',['view',$user->id])}}"><i class="bx bx-refresh"></i> reload</a>
             </div>
         </div>
     </div>

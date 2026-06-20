@@ -19,24 +19,22 @@
 @endpush 
 @section('contents')
 
-<header class="page-title-bar">
-    <div class="d-md-flex align-items-md-start">
-        <div class="mr-sm-auto">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mt-1 p-0 mb-0">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Post Edit</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="btn-toolbar">
-            <a href="{{route('admin.postsAction','create')}}" type="button" class="btn btn-outline-success mr-2"><i class="fas fa-plus"></i> Add Post</a>
-            <a href="{{route('admin.posts')}}" type="button" class="btn btn-success mr-2"> Back</a>
-            <a href="{{route('admin.postsAction',['edit',$post->id])}}" type="button" class="btn btn-primary"><i class="fas fa-spinner"></i></a>
+<div class="page-breadcrumb d-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Post Edit</div>
+    <div class="ms-auto">
+        <div class="btn-group">
+            <a href="{{route('admin.posts')}}" type="button" class="btn btn-primary">Back</a>
+            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                <a class="dropdown-item" href="{{route('admin.postsAction','create')}}"><i class="bx bx-plus"></i> Add Post</a>
+                <a class="dropdown-item" href="{{route('admin.postsAction',['edit',$post->id])}}"><i class="bx bx-refresh"></i> reload</a>
+            </div>
         </div>
     </div>
-</header>
+</div>
+
 
 @include(adminTheme().'alerts')
 <form action="{{route('admin.postsAction',['update',$post->id])}}" method="post" enctype="multipart/form-data">
@@ -57,14 +55,16 @@
                             @endif
                         </div>
                         <div class="mb-3 input-group">
-                            <label class="slugEdit" style="cursor: pointer;width: 130px;padding: 6px;margin:0;background: #c6c9d5;"><span>
-                                @if($post->auto_slug)
-                                Custom Slug <i class="fa fa-edit"></i>
-                                @else    
-                                Auto Slug
-                                @endif
-                            </span></label>
-                            <input type="text" class="slugEditData form-control {{$errors->has('slug')?'error':''}}"
+                            <label class="slugEdit" style="cursor: pointer;width: 30px;padding: 4px 8px;margin:0;background: #c6c9d5;">
+                                <span>
+                                    @if($post->auto_slug)
+                                    Custom Slug <i class="bx bx-edit"></i>
+                                    @else    
+                                    <i class="bx bx-shuffle"></i>
+                                    @endif
+                                </span>
+                            </label>
+                            <input type="text" class="slugEditData form-control form-control-sm {{$errors->has('slug')?'error':''}}"
                                 @if($post->auto_slug) 
                                     name="slug"
                                 @else
@@ -131,26 +131,26 @@
                     <div class="card-body">
                         <div class="mb-3">
                             <label class="form-label">Post Image</label>
-                            <input type="file" name="image" class="form-control {{$errors->has('image')?'error':''}}" />
+                            <input type="file" name="image" accept="image/*" data-name="PostImage" class="form-control uploadImage {{$errors->has('image')?'error':''}}" />
                             @if ($errors->has('image'))
                             <div class="invalid-feedback">{{ $errors->first('image') }}</div>
                             @endif
                         </div>
                         <div class="mb-3">
-                            <img src="{{asset($post->image())}}" style="max-width: 100px;" />
+                            <img src="{{asset($post->image())}}" class="PostImage" style="max-width: 100px;" />
                             @if($post->imageFile)
                             <a href="{{route('admin.mediesDelete',$post->imageFile->id)}}" class="mediaDelete" style="color: red;"><i class="fa fa-trash"></i></a>
                             @endif
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Post Banner</label>
-                            <input type="file" name="banner" class="form-control {{$errors->has('banner')?'error':''}}" />
+                            <input type="file" name="banner" accept="image/*" data-name="PostIBanner" class="form-control uploadImage {{$errors->has('banner')?'error':''}}" />
                             @if ($errors->has('banner'))
                             <div class="invalid-feedback">{{ $errors->first('banner') }}</div>
                             @endif
                         </div>
                         <div class="mb-3">
-                            <img src="{{asset($post->banner())}}" style="max-width: 200px;" />
+                            <img src="{{asset($post->banner())}}" class="PostIBanner" style="max-width: 200px;" />
                             @if($post->bannerFile)
                             <a href="{{route('admin.mediesDelete',$post->bannerFile->id)}}" class="mediaDelete" style="color: red;"><i class="fa fa-trash"></i></a>
                             @endif

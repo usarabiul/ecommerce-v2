@@ -4,28 +4,31 @@
 @endsection 
 
 @push('css')
-<style type="text/css"></style>
+<style type="text/css">
+
+</style>
 @endpush 
 
 @section('contents')
 
-<header class="page-title-bar">
-    <div class="d-md-flex align-items-md-start">
-        <div class="mr-sm-auto">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mt-1 p-0 mb-0">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Posts List</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="btn-toolbar">
-            <a href="{{route('admin.postsAction','create')}}" type="button" class="btn btn-outline-success mr-2"><i class="fas fa-plus"></i> Add Post</a>
-            <a href="{{route('admin.posts')}}" type="button" class="btn btn-primary"><i class="fas fa-spinner"></i></a>
+
+<div class="page-breadcrumb d-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Posts List</div>
+    <div class="ms-auto">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary"><i class="bx bx-menu-alt-left"></i></button>
+            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                <a class="dropdown-item" href="{{route('admin.postsAction','create')}}" ><i class="bx bx-plus"></i> Add Post </a>
+                <a class="dropdown-item" href="{{route('admin.posts')}}"><i class="bx bx-refresh"></i> Reload</a>
+            </div>
         </div>
     </div>
-</header>
+</div>
+
+
 
 @include(adminTheme().'alerts')
 
@@ -77,8 +80,8 @@
                     </div>
                 </div>
                 <div class="table-responsive" style="min-height:300px;">
-                    <table class="table table-hover">
-                        <thead class="thead-light">
+                    <table class="table mb-0  table-hover">
+                        <thead class="table-light">
                             <tr>
                                 <th style="min-width: 100px;width:100px;">
                                     <div class="custom-control custom-checkbox">
@@ -92,34 +95,33 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($posts as $i=>$post)
+                            @forelse($posts as $i=>$post)
                             <tr>
                                 <td>
                                     <div class="custom-control custom-control-inline custom-control-nolabel custom-checkbox">
                                         <input type="checkbox" class="custom-control-input checkbox" name="checkid[]" value="{{$post->id}}" id="ckb1">  <label class="custom-control-label" for="ckb1">ID </label>
                                     </div>
-                                    {{$posts->currentpage()==1?$i+1:$i+($posts->perpage()*($posts->currentpage() - 1))+1}}
+                                    {{ $posts->firstItem() + $i }}
                                 </td>
                                 <td>
                                     <span><a href="{{route('blogView',$post->slug?:'no-title')}}" target="_blank">{{$post->name}}</a></span><br />
-
-                                    <span><i class="fa fa-eye" style="color: #1ab394;"></i> 0</span>
+                                    <span><i class="bx bx-show" style="color: #1ab394;"></i> 0</span>
                                     @if($post->status=='active')
-                                    <span class="badge badge-success">Active </span>
+                                    <span class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">Active </span>
                                     @elseif($post->status=='inactive')
-                                    <span class="badge badge-danger">Inactive </span>
+                                    <span class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3">Inactive </span>
                                     @else
-                                    <span class="badge badge-danger">Draft </span>
+                                    <span class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3">Draft </span>
                                     @endif
 
                                     @if($post->featured==true)
-                                    <span><i class="fa fa-star" style="color: #1ab394;"></i></span>
+                                    <span><i class="bx bx-star" style="color: #1ab394;"></i></span>
                                     @endif
 
-                                    <span><i class="fa fa-calendar" style="color: #1ab394;"></i> {{$post->created_at->format('d-m-Y')}}</span>
+                                    <span><i class="bx bx-calendar" style="color: #1ab394;"></i> {{$post->created_at->format('d-m-Y')}}</span>
 
                                     <span>
-                                        <a href="{{route('admin.postsComments',$post->id)}}"><i class="fa fa-comment" style="color: #1ab394;"></i> ({{$post->postComments->where('status','<>','temp')->count()}})</a>
+                                        <i class="bx bx-comment" style="color: #1ab394;"></i> ({{$post->postComments->where('status','<>','temp')->count()}})
                                     </span>
                                 </td>
                                 <td style="padding: 5px;">
@@ -128,18 +130,28 @@
                                 <td>
                                     @foreach($post->postCategories as $i=>$ctg) {{$i==0?'':'-'}} {{$ctg->name}} @endforeach
                                 </td>
-                                <td style="text-align:center;">
+                                
+                                <td style="text-align:center;padding: 3px;">
                                     <div class="dropdown">
-                                        <button type="button" class="btn btn-success btn-ico" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                        <div class="dropdown-arrow"></div>
-                                            <a href="{{route('admin.postsAction',['edit',$post->id])}}" class="dropdown-item"><i class="fa fa-edit"></i> Edit </a>
-                                            <a href="{{route('admin.postsAction',['delete',$post->id])}}" onclick="return confirm('Are You Want To Delete')" class="dropdown-item"><i class="fa fa-trash"></i> Delete </a>
+                                        <button type="button" class="btn btn-primary split-bg-primary" data-bs-toggle="dropdown">	
+                                            <span class="bx bx-dots-vertical"></span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                            <a class="dropdown-item" href="{{route('blogView',$post->slug?:'no-slug')}}" target="_blank"><i class="bx bxs-show"></i> View </a>
+                                            <a class="dropdown-item" href="{{route('admin.postsComments',$post->id)}}"><i class="bx bxs-message"></i> Comments </a>
+                                            <a class="dropdown-item" href="{{route('admin.postsAction',['edit',$post->id])}}"><i class="bx bxs-edit"></i> Edit </a>
+                                            <a class="dropdown-item text-danger" href="{{route('admin.postsAction',['delete',$post->id])}}" onclick="return confirm('Are you sure you want to delete this post?')">
+                                                <i class="bx bxs-trash"></i> Delete
+                                            </a>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                            @endforeach
+                            @empty
+                            <tr>
+                                <td colspan="5" style="text-align: center;">No Posts Found</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
 

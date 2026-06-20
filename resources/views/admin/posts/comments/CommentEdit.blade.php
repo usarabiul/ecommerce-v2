@@ -1,28 +1,24 @@
-@extends(adminTheme().'layouts.app') @section('title')
+@extends(adminTheme().'layouts.app') 
+@section('title')
 <title>{{websiteTitle('Comment Edit')}}</title>
 @endsection @push('css')
 <style type="text/css"></style>
-@endpush @section('contents')
+@endpush 
 
-<div class="content-header row">
-    <div class="content-header-left col-md-6 col-12 mb-2">
-        <h3 class="content-header-title mb-0">Comment Edit</h3>
-        <div class="row breadcrumbs-top">
-            <div class="breadcrumb-wrapper col-12">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard </a></li>
-                    <li class="breadcrumb-item active">Comment Edit</li>
-                </ol>
+@section('contents')
+
+<div class="page-breadcrumb d-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Comment Edit</div>
+    <div class="ms-auto">
+        <div class="btn-group">
+            <a href="{{route('admin.postsComments',$comment->src_id)}}" type="button" class="btn btn-primary">Back</a>
+            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                <a class="dropdown-item" href="{{route('admin.postsCommentsAll')}}">Comments All</a>
+                <a class="dropdown-item" href="{{route('admin.postsComments',[$comment->src_id,'actionType'=>'addComment'])}}"><i class="bx bx-refresh"></i> reload</a>
             </div>
-        </div>
-    </div>
-    <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
-        <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-            <a class="btn btn-outline-primary" href="{{route('admin.postsComments',[$comment->src_id])}}">BACK</a>
-            <a class="btn btn-outline-primary" href="{{route('admin.postsCommentsAll')}}">All Comments</a>
-            <a class="btn btn-outline-primary reloadPage" href="javascript:void(0)">
-                <i class="fa-solid fa-rotate"></i>
-            </a>
         </div>
     </div>
 </div>

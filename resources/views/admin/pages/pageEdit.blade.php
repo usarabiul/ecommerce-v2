@@ -10,24 +10,23 @@
 @endpush 
 @section('contents')
 
-<header class="page-title-bar">
-    <div class="d-md-flex align-items-md-start">
-        <div class="mr-sm-auto">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mt-1 p-0 mb-0">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Page Edit</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="btn-toolbar">
-            <a href="{{route('admin.pagesAction','create')}}" type="button" class="btn btn-outline-success mr-2"><i class="fas fa-plus"></i> Add Page</a>
-            <a href="{{route('admin.pages')}}" type="button" class="btn btn-success mr-2"> Back</a>
-            <a href="{{route('admin.pagesAction',['edit',$page->id])}}" type="button" class="btn btn-primary"><i class="fas fa-spinner"></i></a>
+
+<div class="page-breadcrumb d-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Page Edit</div>
+    <div class="ms-auto">
+        <div class="btn-group">
+            <a href="{{route('admin.pages')}}" type="button" class="btn btn-primary">Back</a>
+            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                <a class="dropdown-item" href="{{route('admin.pagesAction','create')}}"><i class="bx bx-plus"></i>Add  Page </a>
+                <a class="dropdown-item" href="{{route('admin.pagesAction',['edit',$page->id])}}"><i class="bx bx-refresh"></i> reload</a>
+            </div>
         </div>
     </div>
-</header>
+</div>
+
 
 @include(adminTheme().'alerts')
 <form action="{{route('admin.pagesAction',['update',$page->id])}}" method="post" enctype="multipart/form-data">
@@ -56,20 +55,22 @@
                             @endif
                         </div>
                         <div class="mb-3 input-group">
-                            <label class="slugEdit" style="cursor: pointer;width: 130px;padding: 6px;margin:0;background: #c6c9d5;"><span>
-                                @if($page->auto_slug)
-                                Custom Slug <i class="fa fa-edit"></i>
-                                @else    
-                                Auto Slug
-                                @endif
-                            </span></label>
-                            <input type="text" class="slugEditData form-control {{$errors->has('slug')?'error':''}}"
+                            <label class="slugEdit" style="cursor: pointer;width: 30px;padding: 4px 8px;margin:0;background: #c6c9d5;">
+                                <span>
+                                    @if($page->auto_slug)
+                                    Custom Slug <i class="bx bx-edit"></i>
+                                    @else    
+                                    <i class="bx bx-shuffle"></i>
+                                    @endif
+                                </span>
+                            </label>
+                            <input type="text" class="slugEditData form-control form-control-sm {{$errors->has('slug')?'error':''}}"
                                 @if($page->auto_slug) 
                                     name="slug"
                                 @else
                                 disabled
                                 @endif
-                            placeholder="Post Slug" value="{{$page->slug?:old('slug')}}" />
+                            placeholder="Page Slug" value="{{$page->slug?:old('slug')}}" />
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Short Description </label>
@@ -138,11 +139,9 @@
                         
                         <div class="mb-3">
                             <img src="{{asset($page->image())}}" style="max-width: 100px;" />
-                            @isset(json_decode(Auth::user()->permission->permission, true)['pages']['add'])
                             @if($page->imageFile)
                             <a href="{{route('admin.mediesDelete',$page->imageFile->id)}}" class="mediaDelete" style="color: red;"><i class="fa fa-trash"></i></a>
                             @endif
-                            @endisset
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Banner</label>
@@ -153,11 +152,9 @@
                         </div>
                         <div class="mb-3">
                             <img src="{{asset($page->banner())}}" style="max-width: 200px;" />
-                            @isset(json_decode(Auth::user()->permission->permission, true)['pages']['add'])
                             @if($page->bannerFile)
                             <a href="{{route('admin.mediesDelete',$page->bannerFile->id)}}" class="mediaDelete" style="color: red;"><i class="fa fa-trash"></i></a>
                             @endif
-                            @endisset
                         </div>
                     </div>
                 </div>

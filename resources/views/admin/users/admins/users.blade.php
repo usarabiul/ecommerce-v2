@@ -1,35 +1,34 @@
 @extends(adminTheme().'layouts.app') 
 @section('title')
 <title>{{websiteTitle('Admin Users')}}</title>
-@endsection @push('css')
+@endsection 
+@push('css')
 <style type="text/css"></style>
-@endpush @section('contents')
+@endpush 
+
+@section('contents')
 
 
-<header class="page-title-bar">
-    <div class="d-md-flex align-items-md-start">
-        <div class="mr-sm-auto">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mt-1 p-0 mb-0">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Admin Users</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="btn-toolbar">
-            <button type="button" data-toggle="modal" data-target="#AddUser" class="btn btn-outline-success mr-2"><i class="fas fa-plus"></i> Add User</button>
-            <a href="{{route('admin.usersAdmin')}}" type="button" class="btn btn-primary"><i class="fas fa-spinner"></i></a>
+<div class="page-breadcrumb d-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Admin Users</div>
+    <div class="ms-auto">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary"><i class="bx bx-menu-alt-left"></i></button>
+            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                <a class="dropdown-item" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#AddUser" ><i class="bx bx-plus"></i> Add Admin </a>
+                <a class="dropdown-item" href="{{route('admin.usersAdmin')}}"><i class="bx bx-refresh"></i> Reload</a>
+            </div>
         </div>
     </div>
-</header>
+</div>
+
 
 @include(adminTheme().'alerts')
 
 <div class="card">
-    <div class="card-header" style="border-bottom: 1px solid #e3ebf3;">
-        <h4 class="card-title">Admin users List</h4>
-    </div>
     <div class="card-content">
         <div class="card-body">
         <form action="{{route('admin.usersAdmin')}}">
@@ -69,15 +68,15 @@
                 </div>
                 <div class="col-md-4">
                     <ul class="statuslist">
-                        <li><a href="{{route('admin.usersAdmin')}}">All ({{$totals->total}})</a></li>
-                        <li><a href="{{route('admin.usersAdmin',['status'=>'active'])}}">Active ({{$totals->active}})</a></li>
-                        <li><a href="{{route('admin.usersAdmin',['status'=>'inactive'])}}">Inactive ({{$totals->inactive}})</a></li>
+                        <li><a href="{{route('admin.usersAdmin')}}" class="{{ !request()->has('status') ? 'active' : '' }}">All ({{$totals->total}})</a></li>
+                        <li><a href="{{route('admin.usersAdmin',['status'=>'active'])}}" class="{{ request()->status=='active' ? 'active' : '' }}">Active ({{$totals->active}})</a></li>
+                        <li><a href="{{route('admin.usersAdmin',['status'=>'inactive'])}}" class="{{ request()->status=='inactive' ? 'active' : '' }}">Inactive ({{$totals->inactive}})</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="table-responsive" style="min-height:300px;">
-                <table class="table">
+                <table class="table mb-0">
                     <thead class="table-light">
                         <tr>
                             <th style="min-width: 100px; width: 100px;">
@@ -94,15 +93,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $i=>$user)
+                        @forelse($users as $i=>$user)
                         <tr>
                             <td>
-                                @if($user->id==Auth::id()) @else
+                                @if($user->id!=Auth::id()) 
                                  <div class="custom-control custom-control-inline custom-control-nolabel custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input checkbox" name="checkid[]" value="{{$user->id}}" id="ckb1">  <label class="custom-control-label" for="ckb1">ID </label>
+                                    <input type="checkbox" class="custom-control-input checkbox" name="checkid[]" value="{{$user->id}}" id="ckb1">  <label class="custom-control-label" for="ckb1">{{ $users->firstItem() + $i }} </label>
                                 </div>
                                 @endif
-                                {{$users->currentpage()==1?$i+1:$i+($users->perpage()*($users->currentpage() - 1))+1}}
                             </td>
                             <td style="padding: 0 3px; text-align: center;">
                                 <span>
@@ -115,31 +113,41 @@
                             <td>{{$user->email}}</td>
                             <td> 
                                 @if($user->permission)
-                                <span class="badge badge-success">{{$user->permission->name}}</span>
+                                <span class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">{{$user->permission->name}}</span>
                                 @else
-                                <span class="badge badge-danger">Un-athorize</span>
+                                <span class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3">Un-authorized</span>
                                 @endif
                             </td>
 
                             <td>
-                                @if($user->status)
-                                <span class="badge badge-success">Active </span>
+                                @if($user->status='active')
+                                <span class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">Active </span>
                                 @else
-                                <span class="badge badge-danger">Draft </span>
+                                <span class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3">Draft </span>
                                 @endif
                             </td>
-                            <td style="text-align:center;">
+                            <td style="text-align:center;padding: 3px;">
                                 <div class="dropdown">
-                                    <button type="button" class="btn btn-success btn-ico" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                    <div class="dropdown-arrow"></div>
-                                        <a href="{{route('admin.usersAdminAction',['edit',$user->id])}}" class="dropdown-item"><i class="fa fa-edit"></i> Edit </a>
-                                        <a href="{{route('admin.usersAdminAction',['delete',$user->id])}}" onclick="return confirm('Are You Want To Delete')" class="dropdown-item"><i class="fa fa-trash"></i> Delete </a>
+                                    <button type="button" class="btn btn-primary split-bg-primary" data-bs-toggle="dropdown">	
+                                        <span class="bx bx-dots-vertical"></span>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                        <a class="dropdown-item" href="{{route('admin.usersAdminAction',['view',$user->id])}}"><i class="bx bxs-show"></i> View </a>
+                                        <a class="dropdown-item" href="{{route('admin.usersAdminAction',['edit',$user->id])}}"><i class="bx bxs-edit"></i> Edit </a>
+                                        @if($user->id!=Auth::id()) 
+                                        <a class="dropdown-item text-danger" href="{{route('admin.usersAdminAction',['delete',$user->id])}}" onclick="return confirm('Are you sure you want to delete this user?')">
+                                            <i class="bx bxs-trash"></i> Remove
+                                        </a>
+                                        @endif
                                     </div>
                                 </div>
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                        <tr>
+                            <td colspan="8" style="text-align: center;">No Admin Found</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -159,9 +167,7 @@
                 @csrf
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel1">Add Admin User</h4>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times; </span>
-                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -171,7 +177,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn grey btn-outline-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn grey btn-outline-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i> Add User</button>
                 </div>
             </form>
@@ -180,4 +186,9 @@
 </div>
 
 
-@endsection @push('js') @endpush
+@endsection 
+@push('js') 
+<script type="text/javascript">
+
+</script>
+@endpush

@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Business\BusinessController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\PostsController;
 
 //Frontend Controller
 Route::get('/', [FrontendController::class, 'index'])->name('index');
@@ -32,7 +33,6 @@ Route::get('/blog/{slug}',[FrontendController::class,'blogView'])->name('blogVie
 Route::post('/blog-comments/{slug}',[FrontendController::class,'blogComments'])->name('blogComments');
 
 
-
 //Auth Controller
 Route::group(['middleware'=>['authCheck']], function(){
     Route::any('/login',[AuthController::class,'login'])->name('login');
@@ -43,6 +43,7 @@ Route::group(['middleware'=>['authCheck']], function(){
     Route::post('/log-out',[AuthController::class,'logout'])->name('logout');
 });
 
+Route::get('/{slug}',[FrontendController::class,'pageView'])->name('pageView');
 
 //Customer Route Group Start
 Route::group(['prefix'=>'customer', 'as'=>'customer.','middleware'=>['auth','role:customer']], function(){

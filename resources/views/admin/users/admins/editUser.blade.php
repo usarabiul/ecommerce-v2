@@ -17,28 +17,21 @@
 @endpush
 @section('contents')
 
-
-<!--breadcrumb-->
-<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-    <div class="breadcrumb-title pe-3">Profile Edit</div>
-    <div class="ps-3">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0 p-0">
-                <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}"><i class="bx bx-home-alt"></i></a>
-                </li>
-                <li class="breadcrumb-item"><a href="{{route('admin.usersAdmin')}}">Admin Users</a>
-                </li>
-                <li class="breadcrumb-item active">User Profile</li>
-            </ol>
-        </nav>
-    </div>
+<div class="page-breadcrumb d-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Edit Profile</div>
     <div class="ms-auto">
         <div class="btn-group">
-            <a href="{{route('admin.usersAdminAction',['edit',$user->id])}}" class="btn btn-primary"><i class="bx bx-refresh"></i></a>
+            <a href="{{route('admin.usersAdmin')}}" type="button" class="btn btn-primary">Back</a>
+            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                <a class="dropdown-item" href="{{route('admin.usersAdminAction',['view',$user->id])}}"><i class="bx bx-show"></i> View </a>
+                <a class="dropdown-item" href="{{route('admin.usersAdminAction',['edit',$user->id])}}"><i class="bx bx-refresh"></i> reload</a>
+            </div>
         </div>
     </div>
 </div>
-<!--end breadcrumb-->
 
 	
 @include(adminTheme().'alerts')
@@ -60,7 +53,7 @@
                         <div class="media-body mt-75">
                             <div class="col-12 px-0 d-flex flex-sm-row flex-column justify-content-start">
                                 <label class="btn btn-info btn-xs mx-2" for="account-upload">Upload new photo </label>
-                                <input type="file" name="image" id="account-upload" hidden="" />
+                                <input type="file" name="image" class="uploadImage" data-name="ProfileImage" id="account-upload" hidden="" />
                                 @if($user->imageFile)
                                 <a href="{{route('admin.mediesDelete',$user->imageFile->id)}}" class="mediaDelete btn btn-xs btn-danger mx-2">Reset </a>
                                 @endif
@@ -109,7 +102,7 @@
                             <label class="form-label">Division </label>
                             <select id="division" class="form-control {{$errors->has('division')?'is-invalid':''}}" name="division">
                                 <option value="">Select Division</option>
-                                @foreach(App\Models\Country::where('type',2)->where('parent_id',1)->get() as $data)
+                                @foreach(geoData(2,1) as $data)
                                 <option value="{{$data->id}}" {{$data->id==$user->division?'selected':''}}>{{$data->name}}</option>
                                 @endforeach
                             </select>
@@ -124,7 +117,7 @@
                                 <option value="">No District</option>
                                 @else
                                 <option value="">Select District</option>
-                                @foreach(App\Models\Country::where('type',3)->where('parent_id',$user->division)->get() as $data)
+                                @foreach(geoData(3,$user->division) as $data)
                                 <option value="{{$data->id}}" {{$data->id==$user->district?'selected':''}}>{{$data->name}}</option>
                                 @endforeach @endif
                             </select>
@@ -139,7 +132,7 @@
                                 <option value="">No City</option>
                                 @else
                                 <option value="">Select City</option>
-                                @foreach(App\Models\Country::where('type',4)->where('parent_id',$user->district)->get() as $data)
+                                @foreach(geoData(4,$user->district) as $data)
                                 <option value="{{$data->id}}" {{$data->id==$user->city?'selected':''}}>{{$data->name}}</option>
                                 @endforeach @endif
                             </select>
@@ -208,7 +201,7 @@
                             <div class="input-group">
                                 <input type="password" class="form-control {{$errors->has('old_password')?'is-invalid':''}} password " placeholder="Old Password" name="old_password" value="{{old('old_password')?:$user->password_show}}" required="" />
                                 <div class="input-group-text showPassword">
-                                    <i class="fa fa-eye-slash"></i>
+                                    <i class="bx bx-hide"></i>
                                 </div>
                             </div>
                             @if ($errors->has('old_password'))

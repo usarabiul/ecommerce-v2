@@ -66,7 +66,13 @@
       }
       tbody, td, tfoot, th, thead, tr {
           vertical-align: middle;
+          white-space: initial;
       }
+
+      .invalid-feedback {
+        display: block;
+      }
+      
     </style>
 
      @stack('css')
@@ -760,18 +766,20 @@
         });
 
         $('.slugEdit').click(function(){
-            var span = $(this).find('span');
-            var isCustom = span.text().trim() === 'Auto Slug';
-            span.html(isCustom ? 'Custom Slug <i class="fa fa-edit"></i>' : 'Auto Slug');
-            var input = $('.slugEditData');
-            if (isCustom) {
-                input.attr('name', 'slug');
-                input.attr('disabled', false);
-            } else {
-                input.removeAttr('name');
-                input.attr('disabled', true);
-            }
-        });
+          var span = $(this).find('span');
+          var input = $('.slugEditData');
+          var isAutoToCustom = span.find('i').hasClass('bx-shuffle');
+
+          if (isAutoToCustom) {
+              span.html('<i class="bx bx-edit"></i>');
+              input.attr('name', 'slug');
+              input.prop('disabled', false);
+          } else {
+              span.html('<i class="bx bx-shuffle"></i>');
+              input.removeAttr('name');
+              input.prop('disabled', true);
+          }
+      });
 
         $(document).on("keyup", ".titleForSlug", function () {
             let title = $(this).val();

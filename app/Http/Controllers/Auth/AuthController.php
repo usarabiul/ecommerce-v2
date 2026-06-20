@@ -16,6 +16,7 @@ class AuthController extends Controller
 
         if($r->isMethod('post')){
             //Login Post Action
+           
             $check = $r->validate([
                 'email_or_mobile' => 'required|string|max:100',
                 'password' => 'required|string|max:50'
@@ -33,10 +34,11 @@ class AuthController extends Controller
             }
 
             $user =User::where($field,$login)->first();
+
             if($user){
                 if(Hash::check($r->password, $user->password)){
 
-                    Auth::login($user, $remember_me);
+                    
 
                     if ($user->admin) {
                         $defaultRoute = route('admin.dashboard');
@@ -49,7 +51,7 @@ class AuthController extends Controller
                     }
 
                     $redirectUrl = Session::get('url.intended', $defaultRoute);
-
+                    Auth::login($user, $remember_me);
                     //Session::forget('url.intended');
                     $message = 'Login successful!';
                     $status = true;
@@ -115,7 +117,7 @@ class AuthController extends Controller
 
             $redirectUrl = Session::get('url.intended', $defaultRoute);
 
-            $message = 'Registration successful!';
+            $message = null;
             $status = true;
             $code = 200;
 

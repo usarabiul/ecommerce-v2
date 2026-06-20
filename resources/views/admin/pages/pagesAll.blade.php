@@ -7,23 +7,21 @@
 @endpush 
 @section('contents')
 
-<header class="page-title-bar">
-    <div class="d-md-flex align-items-md-start">
-        <div class="mr-sm-auto">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mt-1 p-0 mb-0">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Pages List</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="btn-toolbar">
-            <a href="{{route('admin.pagesAction','create')}}" type="button" class="btn btn-outline-success mr-2"><i class="fas fa-plus"></i> Add Page</a>
-            <a href="{{route('admin.pages')}}" type="button" class="btn btn-primary"><i class="fas fa-spinner"></i></a>
+<div class="page-breadcrumb d-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Pages List</div>
+    <div class="ms-auto">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary"><i class="bx bx-menu-alt-left"></i></button>
+            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                <a class="dropdown-item" href="{{route('admin.pagesAction','create')}}" ><i class="bx bx-plus"></i> Add Page </a>
+                <a class="dropdown-item" href="{{route('admin.pages')}}"><i class="bx bx-refresh"></i> Reload</a>
+            </div>
         </div>
     </div>
-</header>
+</div>
 
 
 @include(adminTheme().'alerts')
@@ -64,25 +62,24 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($pages as $i=>$page)
+                            @forelse($pages as $i=>$page)
                             <tr>
-                                <td class="text-center" ><strong class="text-black">{{$pages->currentpage()==1?$i+1:$i+($pages->perpage()*($pages->currentpage() - 1))+1}}</strong></td>
+                                <td class="text-center" ><strong class="text-black">{{ $pages->firstItem() + $i }}</strong></td>
                                 <td>
                                     <span>
-                                        <a href="{{route('pageView',$page->slug?:'no-slug')}}" target="_blank">{{$page->name}}
-                                        </a>
+                                        {{$page->name}}
                                         @if($page->template)
                                         <span style="color: #ccc;">({{$page->template}})</span>
                                         @endif
                                         </span>
                                         <br />
                                     @if($page->featured==true)
-                                    <span><i class="fa fa-star" style="color: #faca51;"></i></span>
+                                    <span><i class="bx bx-star" style="color: #faca51;"></i></span>
                                     @endif
 
-                                    <span style="color: #ccc;"><i class="fa fa-calendar" style="color: #1ab394;"></i> {{$page->created_at->format('d-m-Y')}}</span>
+                                    <span style="color: #ccc;"><i class="bx bx-calendar" style="color: #1ab394;"></i> {{$page->created_at->format('d-m-Y')}}</span>
                                     <span style="color: #ccc;">
-                                        <i class="fa fa-user" style="color: #1ab394;"></i>
+                                        <i class="bx bx-user" style="color: #1ab394;"></i>
                                         {{Str::limit($page->user?$page->user->name:'No Author',15)}}
                                     </span>
                                 </td>
@@ -91,30 +88,33 @@
                                 </td>
                                 <td>
                                     @if($page->status=='active')
-                                    <span class="badge badge-success">Active </span>
+                                    <span class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">Active </span>
                                     @elseif($page->status=='inactive')
-                                    <span class="badge badge-danger">Inactive </span>
+                                    <span class="badge rounded-pill text-danger bg-light-success p-2 text-uppercase px-3">Inactive </span>
                                     @else
-                                    <span class="badge badge-danger">Draft </span>
+                                    <span class="badge rounded-pill text-danger bg-light-success p-2 text-uppercase px-3">Draft </span>
                                     @endif
                                 </td>
-                                <td style="text-align:center;">
+                                <td style="text-align:center;padding: 3px;">
                                     <div class="dropdown">
-                                        <button type="button" class="btn btn-success btn-ico" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></button>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                        <div class="dropdown-arrow"></div>
-                                            <a href="{{route('admin.pagesAction',['edit',$page->id])}}" class="dropdown-item"><i class="fa fa-edit"></i> Edit </a>
-                                            <a href="{{route('admin.pagesAction',['delete',$page->id])}}" onclick="return confirm('Are You Want To Delete')" class="dropdown-item"><i class="fa fa-trash"></i> Delete </a>
+                                        <button type="button" class="btn btn-primary split-bg-primary" data-bs-toggle="dropdown">	
+                                            <span class="bx bx-dots-vertical"></span>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                            <a class="dropdown-item" href="{{route('pageView',$page->slug?:'no-slug')}}" target="_blank"><i class="bx bxs-show"></i> View </a>
+                                            <a class="dropdown-item" href="{{route('admin.pagesAction',['edit',$page->id])}}"><i class="bx bxs-edit"></i> Edit </a>
+                                            <a class="dropdown-item text-danger" href="{{route('admin.pagesAction',['delete',$page->id])}}" onclick="return confirm('Are you sure you want to delete this page?')">
+                                                <i class="bx bxs-trash"></i> Delete
+                                            </a>
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                            @endforeach
-                            @if($pages->count()==0)
-                                <tr>
-                                    <td colspan="5" class="text-center">No Result Found</td>
-                                </tr>
-                            @endif
+                            @empty
+                            <tr>
+                                <td colspan="5" class="text-center">No Result Found</td>
+                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
 

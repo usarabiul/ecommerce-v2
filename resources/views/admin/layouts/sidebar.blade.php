@@ -165,16 +165,16 @@
         <li class="menu-label">User Management</li>
 
         <!-- Admin Users -->
-        <li class="{{ Request::is('admin/users/admin*') ? 'mm-active' : '' }}">
+        <li class="{{ Request::is('admin/users/admin*') ? 'mm-active' : '' }} {{ Request::is('admin/users/roles*') ? 'mm-active' : '' }}">
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class='bx bx-shield-quarter'></i></div>
                 <div class="menu-title">Admin Users</div>
             </a>
             <ul>
-                <li class="{{ Request::is('admin/users/admin') ? 'mm-active' : '' }}">
+                <li class="{{ Request::is('admin/users/admin*') ? 'mm-active' : '' }}">
                     <a href="{{ route('admin.usersAdmin') }}"><i class='bx bx-radio-circle'></i>Admin List</a>
-                </li>
-                <li><a href="#"><i class='bx bx-radio-circle'></i>Roles Permission</a></li>
+                </li> 
+                <li class="{{ Request::is('admin/users/roles*') ? 'mm-active' : '' }}" ><a href="{{ route('admin.userRoles') }}"><i class='bx bx-radio-circle'></i>Roles Permission</a></li>
             </ul>
         </li>
 
