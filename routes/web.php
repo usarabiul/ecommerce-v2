@@ -7,6 +7,7 @@ use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Business\BusinessController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PostsController;
+use App\Http\Controllers\Admin\MenusController;
 
 //Frontend Controller
 Route::get('/', [FrontendController::class, 'index'])->name('index');

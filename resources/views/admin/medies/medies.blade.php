@@ -1,4 +1,6 @@
-@extends(adminTheme().'layouts.app') @section('title')
+@extends(adminTheme().'layouts.app') 
+
+@section('title')
 <title>{{websiteTitle('Medias Library')}}</title>
 @endsection @push('css')
 <style type="text/css">
@@ -61,24 +63,15 @@
         }
     }
 </style>
-@endpush @section('contents')
-    
-<header class="page-title-bar">
-    <div class="d-md-flex align-items-md-start">
-        <div class="mr-sm-auto">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mt-1 p-0 mb-0">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Media Assets</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="btn-toolbar">
-            <a href="{{route('admin.medies')}}" type="button" class="btn btn-primary"><i class="fas fa-spinner"></i></a>
-        </div>
-    </div>
-</header>
+@endpush 
+@section('contents')
 
+<div class="page-breadcrumb d-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Media Assets</div>
+    <div class="ms-auto">
+        <a href="{{route('admin.medies')}}" class="btn btn-primary"><i class="bx bx-refresh"></i> Reload </a>
+    </div>
+</div>
 
 
     @include(adminTheme().'alerts')
