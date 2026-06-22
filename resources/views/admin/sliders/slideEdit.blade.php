@@ -10,24 +10,21 @@
 @endpush
 @section('contents')
 
-<header class="page-title-bar">
-    <div class="d-md-flex align-items-md-start">
-        <div class="mr-sm-auto">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb mt-1 p-0 mb-0">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard</a>
-                    </li>
-                    <li class="breadcrumb-item active" aria-current="page">Slide Edit</li>
-                </ol>
-            </nav>
-        </div>
-        <div class="btn-toolbar">
-            <a href="{{route('admin.slidersAction',['edit',$slide->parent_id])}}" type="button" class="btn btn-success mr-2"> Back</a>
-            <a href="{{route('admin.slideAction',['edit',$slide->parent_id])}}" type="button" class="btn btn-primary"><i class="fas fa-spinner"></i></a>
+<div class="page-breadcrumb d-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Slide Edit</div>
+    <div class="ms-auto">
+        <div class="btn-group">
+            <button type="button" class="btn btn-primary"><i class="bx bx-menu-alt-left"></i></button>
+            <button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split px-3" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                <a class="dropdown-item" href="{{route('admin.slidersAction',['edit',$slide->parent_id])}}" > Back </a>
+                <a class="dropdown-item" href="{{route('admin.slideAction',['edit',$slide->parent_id])}}"><i class="bx bx-refresh"></i> Reload</a>
+            </div>
         </div>
     </div>
-</header>
-
+</div>
 
 @include(adminTheme().'alerts')
 <form action="{{route('admin.slideAction',['update',$slide->id])}}" method="post" enctype="multipart/form-data">

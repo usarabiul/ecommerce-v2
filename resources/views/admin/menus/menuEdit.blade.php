@@ -71,21 +71,6 @@
                 <div class="card-body">
 
                     <div class="accordion accordion-flush">
-						<div class="accordion-item">
-						    <h2 class="accordion-header" id="flush-headingOne">
-						   <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-							Accordion Item #1
-						   </button>
-						    </h2>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">Anim pariatur cliche reprehenderit, ____ eiusmod high life accusamus _____ richardson ad squid. 3 ____ moon officia aute, non _________ skateboard dolor brunch. Food _____ quinoa nesciunt laborum eiusmod. ______ 3 wolf moon tempor, ____ aliqua put a bird __ it squid single-origin coffee _____ assumenda shoreditch et. Nihil ____ keffiyeh helvetica, craft beer ______ wes anderson cred nesciunt ________ ea proident. Ad vegan _________ butcher vice lomo. Leggings ________ craft beer farm-to-table, raw _____ aesthetic synth nesciunt you ________ haven't heard of them _________ labore sustainable VHS. </div>
-                            </div>
-                        </div>
-					</div>
-
-
-
-                    <div id="accordion" class="card-expansion menuItemList">
                         <!--Custom menus Items -->
                         @include(adminTheme().'menus.includes.customLink')
 
@@ -97,8 +82,8 @@
 
                         <!--Service Category Items -->
                         @include(adminTheme().'menus.includes.serviceCategoryList')
+					</div>
 
-                    </div>
                 </div>
             </div>
         </div>
@@ -170,11 +155,11 @@
                                         <strong>Sub: {{$menuli->subMenus->count()}}</strong>
                                     </span>
                                     <span class="menumanage">
-                                        <a href="{{route('admin.menusItemsAction',['edit',$menuli->id])}}" style="margin: 0 10px; color: #7bdc00;"><i class="fa fa-edit"></i></a>
-                                        <a href="{{route('admin.menusAction',['edit',$menuli->id])}}" style="margin: 0 10px;"><i class="fa fa-plus"></i></a>
+                                        <a href="{{route('admin.menusItemsAction',['edit',$menuli->id])}}" style="margin: 0 10px; color: #7bdc00;"><i class="bx bx-edit"></i></a>
+                                        <a href="{{route('admin.menusAction',['edit',$menuli->id])}}" style="margin: 0 10px;"><i class="bx bx-plus"></i></a>
                                         
                                         
-                                        <label><i class="fa fa-trash text-danger"></i> <input class="checkbox" type="checkbox" name="deleteItems[]" value="{{$menuli->id}}"></label>
+                                        <label><i class="bx bx-trash text-danger"></i> <input class="checkbox" type="checkbox" name="deleteItems[]" value="{{$menuli->id}}"></label>
                          
                                         <span> </span>
                                     </span>

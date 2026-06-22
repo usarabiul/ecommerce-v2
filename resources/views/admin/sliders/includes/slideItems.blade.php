@@ -44,7 +44,7 @@
             @endforeach
             @if($slider->sliderItems->count()==0)
                 <tr>
-                    <td colspan="2" style="text-align:center;">No Slide Found</td>
+                    <td colspan="3" style="text-align:center;">No Slide Found</td>
                 </tr>
                 @endif
             </tbody>

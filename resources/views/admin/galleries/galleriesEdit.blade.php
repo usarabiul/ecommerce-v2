@@ -25,28 +25,12 @@
 </style>
 @endpush @section('contents')
 
-<!--breadcrumb-->
-<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+<div class="page-breadcrumb d-flex align-items-center mb-3">
     <div class="breadcrumb-title pe-3">Gallery Edit</div>
-    <div class="ps-3">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0 p-0">
-                <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}"><i class="bx bx-home-alt"></i></a>
-                </li>
-                <li class="breadcrumb-item"><a href="{{route('admin.galleries')}}">Galleries list</a>
-                </li>
-                <li class="breadcrumb-item active">Gallery Edit</li>
-            </ol>
-        </nav>
-    </div>
     <div class="ms-auto">
-        <div class="btn-group">
-            <a href="{{route('admin.galleriesAction',['edit',$gallery->id])}}" class="btn btn-primary"><i class="bx bx-refresh"></i></a>
-        </div>
+        <a href="{{route('admin.galleries')}}" class="btn btn-primary">Back</a>
     </div>
 </div>
-<!--end breadcrumb-->
-
 
 @include(adminTheme().'alerts')
 

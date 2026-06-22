@@ -8,6 +8,8 @@ use App\Http\Controllers\Business\BusinessController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\PostsController;
 use App\Http\Controllers\Admin\MenusController;
+use App\Http\Controllers\Admin\EcommerceController;
+use App\Http\Controllers\Admin\OrdersController;
 
 //Frontend Controller
 Route::get('/', [FrontendController::class, 'index'])->name('index');

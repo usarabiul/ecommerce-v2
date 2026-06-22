@@ -6,28 +6,13 @@
 <style type="text/css"></style>
 @endpush @section('contents')
 
-<!--breadcrumb-->
-<div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
+
+<div class="page-breadcrumb d-flex align-items-center mb-3">
     <div class="breadcrumb-title pe-3">Client Edit</div>
-    <div class="ps-3">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0 p-0">
-                <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}"><i class="bx bx-home-alt"></i></a>
-                </li>
-                <li class="breadcrumb-item"><a href="{{route('admin.clients')}}">Client list</a>
-                </li>
-                <li class="breadcrumb-item active">Client Edit</li>
-            </ol>
-        </nav>
-    </div>
     <div class="ms-auto">
-        <div class="btn-group">
-            <a class="btn btn-success" href="{{route('admin.clientsAction','create')}}">Add Client</a>
-            <a href="{{route('admin.clientsAction',['edit',$client->id])}}" class="btn btn-primary"><i class="bx bx-refresh"></i></a>
-        </div>
+        <a href="{{route('admin.clients')}}" class="btn btn-primary"> Back </a>
     </div>
 </div>
-<!--end breadcrumb-->
 
 @include(adminTheme().'alerts')
 <form action="{{route('admin.clientsAction',['update',$client->id])}}" method="post" enctype="multipart/form-data">

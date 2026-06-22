@@ -1,18 +1,11 @@
-<div class="card card-expansion-item mt-0 mb-2">
-    <h2 class="card-header border-0" id="customLink">
-        <button
-            class="accordion-button collapsed"
-            data-bs-toggle="collapse"
-            data-bs-target="#collapsecustomLink"
-            aria-expanded="false"
-            aria-controls="collapsecustomLink"
-        >
-            <span class="collapse-indicator mr-2"><i class="fa fa-fw fa-caret-right"></i></span>
-            <span>Custom Link</span>
-        </button>
+<div class="accordion-item">
+    <h2 class="accordion-header" id="customLink">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-customLink" >
+    Custom Link
+    </button>
     </h2>
-    <div id="collapsecustomLink" class="collapse" aria-labelledby="customLink" data-bs-parent="#accordion">
-        <div class="card-body pt-0">
+    <div id="flush-customLink" class="accordion-collapse collapse" aria-labelledby="customLink">
+        <div class="accordion-body p-1">
             <form action="{{route('admin.menusItemsPost',$menu->id)}}" method="post">
                 @csrf
                 <input type="hidden" name="parent" value="{{$parent->id}}" />

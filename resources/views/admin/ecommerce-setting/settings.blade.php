@@ -6,24 +6,10 @@
 @endpush 
 @section('contents')
 
-<div class="content-header row">
-    <div class="content-header-left col-md-6 col-12 mb-2">
-        <h3 class="content-header-title mb-0">General Setting</h3>
-        <div class="row breadcrumbs-top">
-            <div class="breadcrumb-wrapper col-12">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('admin.dashboard')}}">Dashboard </a></li>
-                    <li class="breadcrumb-item active">General Setting</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-    <div class="content-header-right col-md-6 col-12 mb-md-0 mb-2">
-        <div class="btn-group float-md-right" role="group" aria-label="Button group with nested dropdown">
-            <a class="btn btn-outline-primary reloadPage" href="javascript:void(0)">
-                <i class="fa-solid fa-rotate"></i>
-            </a>
-        </div>
+<div class="page-breadcrumb d-flex align-items-center mb-3">
+    <div class="breadcrumb-title pe-3">Ecommerce Setting</div>
+    <div class="ms-auto">
+        <a href="{{ route('admin.ecommerceSetting') }}" class="btn btn-primary"><i class="bx bx-refresh"></i> Reload </a>
     </div>
 </div>
 
