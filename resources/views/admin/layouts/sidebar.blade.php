@@ -124,7 +124,7 @@
             <ul>
                 <li><a href="{{ route('admin.ecommerceSetting') }}"><i class='bx bx-radio-circle'></i>Settings</a></li>
                 <li><a href="{{ route('admin.ecommerceCoupons') }}"><i class='bx bx-radio-circle'></i>Coupons</a></li>
-                <li><a href="#"><i class='bx bx-radio-circle'></i>Promotion</a></li>
+                <li><a href="{{ route('admin.ecommercePromotion') }}"><i class='bx bx-radio-circle'></i>Promotion</a></li>
             </ul>
         </li>
 

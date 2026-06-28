@@ -1937,6 +1937,152 @@ public function productsBrandsAction(Request $r,$action,$id=null){
         return view(adminTheme().'ecommerce-setting.coupons.couponsEdit',compact('coupon','categories'));
     }
 
+    public function ecommercePromotion(Request $r){
+        $coupons =Attribute::latest()->where('type',13)->where('status','<>','temp')->where('parent_id',null)
+                    ->where(function($q) use ($r) {
+                      if($r->search){
+                        $q->where('name','LIKE','%'.$r->search.'%');
+                      }
+                    })
+                    ->paginate(10);
+        return view(adminTheme().'ecommerce-setting.promotion.promotionList',compact('coupons'));
+    }
+    
+    public function ecommercePromotionAction(Request $r,$action,$id=null){
+ 
+        if($action=='create'){
+            $coupon =Attribute::where('type',13)->where('status','temp')->where('addedby_id',Auth::id())->first();
+            if(!$coupon){
+                $coupon =new Attribute();
+                $coupon->type=13;
+                $coupon->status='temp';
+                $coupon->addedby_id=Auth::id();
+            }
+            $coupon->created_at=Carbon::now();
+            $coupon->save();
+            
+            return redirect()->route('admin.ecommerceCouponsAction',['edit',$coupon->id]);
+            
+        }
+        
+        $coupon =Attribute::where('type',13)->find($id);
+        if(!$coupon){
+            Session()->flash('error','Coupon Are Not Found');
+            return redirect()->route('admin.ecommerceCoupons');
+        }
+        
+        if($action=='search-product'){
+            
+            $products =Post::where('type',2)->where('status','active')->where('name','like','%'.$r->search.'%')->limit(10)->get(['id','name']);
+            
+            if($r->ajax()){
+                $view = view(adminTheme().'ecommerce-setting.includes.searchProduct',compact('products','coupon'))->render();
+                  return Response()->json([
+                      'view' => $view
+                  ]);
+            }
+        }
+        
+        if($action=='add-product'){
+            
+            $postProduct =$coupon->couponProductPosts()->where('reff_id',$r->product_id)->first();
+            if(!$postProduct){
+                $postProduct =new PostAttribute();
+                $postProduct->src_id=$coupon->id;
+                $postProduct->reff_id=$r->product_id;
+                $postProduct->type=6;
+                $postProduct->save();
+            }
+            if($r->ajax()){
+                $view = view(adminTheme().'ecommerce-setting.includes.couponProductsList',compact('coupon'))->render();
+                  return Response()->json([
+                      'view' => $view
+                  ]);
+            }
+        }
+        
+        if($action=='delete-product'){
+            
+            $coupon->couponProductPosts()->whereIn('id',$r->checkedId)->delete();
+            
+            if($r->ajax()){
+                $view = view(adminTheme().'ecommerce-setting.includes.couponProductsList',compact('coupon'))->render();
+                  return Response()->json([
+                      'view' => $view
+                  ]);
+            }
+        }
+        
+        if($action=='update'){
+            
+            $check = $r->validate([
+              'name' => 'required|max:100',
+              'discount' => 'nullable|numeric',
+              'discount_type' => 'nullable|max:100',
+              'min_shopping' => 'nullable|numeric',
+              'max_shopping' => 'nullable|numeric',
+              'start_date' => 'nullable|date',
+              'end_date' => 'nullable|date',
+              'status' => 'required|max:20',
+            ]);
+            
+            $coupon->name=$r->name;
+            $coupon->amounts=$r->discount;
+            $coupon->menu_type=$r->discount_type;
+            $coupon->min_shopping=$r->min_shopping;
+            $coupon->max_shopping=$r->max_shopping;
+            $coupon->start_date=$r->start_date;
+            $coupon->end_date=$r->end_date;
+            $coupon->location=$r->coupon_type?:'order';
+            
+            $slug =Str::slug($r->name);
+            if($slug==null){
+              $coupon->slug=$coupon->id;
+            }else{
+              if(Attribute::where('type',13)->where('slug',$slug)->whereNotIn('id',[$coupon->id])->count() >0){
+              $coupon->slug=$slug.'-'.$coupon->id;
+              }else{
+              $coupon->slug=$slug;
+              }
+            }
+            $coupon->status =$r->status?'active':'inactive';
+            $coupon->editedby_id =Auth::id();
+            $coupon->save();
+            
+            //Tags posts
+            if($r->categories){
+              $coupon->couponCtgs()->whereNotIn('reff_id',$r->categories)->delete();
+               for ($i=0; $i < count($r->categories); $i++) {
+                $ctg = $coupon->couponCtgs()->where('reff_id',$r->categories[$i])->first();
+                if($ctg){}else{
+                $ctg =new PostAttribute();
+                $ctg->src_id=$coupon->id;
+                $ctg->reff_id=$r->categories[$i];
+                $ctg->type=5;
+                }
+                $ctg->drag=$i;
+                $ctg->save();
+               }
+            }else{
+                $coupon->couponCtgs()->delete();
+            }
+            
+            Session()->flash('success','Your Are Successfully Done');
+            return redirect()->back();
+
+        }
+        
+        if($action=='delete'){
+            $coupon->delete();
+            Session()->flash('success','Your Are Successfully Done');
+            return redirect()->route('admin.ecommerceCoupons');
+        }
+        
+        $categories =Attribute::where('type',0)->where('status','active')->where('parent_id',null)->get();
+        
+        return view(adminTheme().'ecommerce-setting.coupons.couponsEdit',compact('coupon','categories'));
+    }
+
 
 
 
