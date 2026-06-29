@@ -34,6 +34,9 @@
 	 <link rel="stylesheet" href="{{asset(assetLinkAdmin().'/assets/css/header-colors.css')}}" />
 
     <style type="text/css">
+      .page-content {
+          padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+      }
       ul.statuslist {
           text-align: right;
       }

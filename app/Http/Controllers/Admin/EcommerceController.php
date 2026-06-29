@@ -1961,7 +1961,7 @@ public function productsBrandsAction(Request $r,$action,$id=null){
             $coupon->created_at=Carbon::now();
             $coupon->save();
             
-            return redirect()->route('admin.ecommerceCouponsAction',['edit',$coupon->id]);
+            return redirect()->route('admin.ecommercePromotionAction',['edit',$coupon->id]);
             
         }
         
@@ -2080,7 +2080,7 @@ public function productsBrandsAction(Request $r,$action,$id=null){
         
         $categories =Attribute::where('type',0)->where('status','active')->where('parent_id',null)->get();
         
-        return view(adminTheme().'ecommerce-setting.coupons.couponsEdit',compact('coupon','categories'));
+        return view(adminTheme().'ecommerce-setting.promotion.promotionEdit',compact('coupon','categories'));
     }
 
 

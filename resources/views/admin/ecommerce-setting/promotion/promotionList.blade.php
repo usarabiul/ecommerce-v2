@@ -12,7 +12,7 @@
 
 <div class="card">
     <div class="card-header d-flex">
-        <h4 class="card-title">Promotion List</h4>
+        <h4 class="card-title mt-2 mb-0">Promotion List</h4>
         <div class="ms-auto">
             <div class="btn-group">
                 <a href="{{route('admin.ecommercePromotion')}}" title="Reload" class="btn btn-primary"><i class="bx bx-refresh"></i></a>
@@ -20,7 +20,7 @@
                     <span class="visually-hidden">Toggle Dropdown </span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
-                    <a class="dropdown-item" href="{{route('admin.ecommercePromotionAction','create')}}" ><i class="bx bx-plus"></i> Add Client </a>
+                    <a class="dropdown-item" href="{{route('admin.ecommercePromotionAction','create')}}" ><i class="bx bx-plus"></i> Add Promotion </a>
                 </div>
             </div>
         </div>
@@ -31,7 +31,7 @@
                 <div class="row">
                     <div class="col-md-12 mb-0">
                         <div class="input-group">
-                            <input type="text" name="search" value="{{request()->search?request()->search:''}}" placeholder="Coupon Code" class="form-control {{$errors->has('search')?'error':''}}" />
+                            <input type="text" name="search" value="{{request()->search?request()->search:''}}" placeholder="Promotion Code" class="form-control {{$errors->has('search')?'error':''}}" />
                             <button type="submit" class="btn btn-success rounded-0"><i class="fa fa-search"></i> Search</button>
                         </div>
                     </div>
@@ -42,12 +42,12 @@
                 <table class="table mb-0  table-hover">
                     <thead class="table-light">
                     <tr>
-                        <th>SL</th>
-                        <th>Name</th>
-                        <th>Validity</th>
-                        <th>Discount</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th style="min-width: 40px;width: 40px;">SL</th>
+                        <th style="min-width: 150px;">Coupon Name</th>
+                        <th style="min-width: 150px;width: 150px;">Validity</th>
+                        <th style="min-width: 150px;width: 150px;">Discount</th>
+                        <th style="min-width: 120px;width: 120px;">Status</th>
+                        <th style="min-width: 100px;width: 100px;">Action</th>
                     </tr>
                     </thead>
                     <tbody>

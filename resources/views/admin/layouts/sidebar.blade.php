@@ -116,15 +116,21 @@
         </li>
 
         <!-- Ecommerce Setting -->
-        <li>
+        <li class="{{ Request::is('admin/ecommerce*') ? 'mm-active' : '' }}">
             <a href="javascript:;" class="has-arrow">
                 <div class="parent-icon"><i class='bx bx-store'></i></div>
                 <div class="menu-title">Ecommerce Setting</div>
             </a>
             <ul>
-                <li><a href="{{ route('admin.ecommerceSetting') }}"><i class='bx bx-radio-circle'></i>Settings</a></li>
-                <li><a href="{{ route('admin.ecommerceCoupons') }}"><i class='bx bx-radio-circle'></i>Coupons</a></li>
-                <li><a href="{{ route('admin.ecommercePromotion') }}"><i class='bx bx-radio-circle'></i>Promotion</a></li>
+                <li class="{{ Request::is('admin/ecommerce/setting*') ? 'mm-active' : '' }}" >
+                    <a href="{{ route('admin.ecommerceSetting') }}"><i class='bx bx-radio-circle'></i>Settings</a>
+                </li>
+                <li class="{{ Request::is('admin/ecommerce/coupons*') ? 'mm-active' : '' }}" >
+                    <a href="{{ route('admin.ecommerceCoupons') }}"><i class='bx bx-radio-circle'></i>Coupons</a>
+                </li>
+                <li class="{{ Request::is('admin/ecommerce/promotion*') ? 'mm-active' : '' }}">
+                    <a href="{{ route('admin.ecommercePromotion') }}"><i class='bx bx-radio-circle'></i>Promotion</a>
+                </li>
             </ul>
         </li>
 
