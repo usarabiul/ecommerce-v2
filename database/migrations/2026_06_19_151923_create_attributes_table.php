@@ -30,7 +30,7 @@ return new class extends Migration
             $table->text('seo_description')->nullable();
             $table->text('seo_keyword')->nullable();
             $table->tinyInteger('type')->default(0)
-                ->comment('0=Category, 1=Slider, 2=Brand, 3=Client, 4=Galleries, 5=Portfolio, 6=Blog Category, 7=Blog Tags, 8=Menus');
+                ->comment('0=Category, 1=Slider, 2=Brand, 3=Client, 4=Galleries, 5=Portfolio, 6=Blog Category, 7=Blog Tags, 8=Menus, 13=Coupon, 14=Promotion');
             $table->string('status', 20)->nullable()->comment('temp, active, inactive');
             $table->tinyInteger('featured')->default(0);
             $table->integer('addedby_id')->nullable();

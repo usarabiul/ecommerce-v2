@@ -42,7 +42,8 @@
         margin: auto;
     }
 </style>
-@endpush @section('contents')
+@endpush 
+@section('contents')
 
 <div class="page-breadcrumb d-flex align-items-center mb-3">
     <div class="breadcrumb-title pe-3">Coupon Edit</div>

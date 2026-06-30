@@ -1938,37 +1938,37 @@ public function productsBrandsAction(Request $r,$action,$id=null){
     }
 
     public function ecommercePromotion(Request $r){
-        $coupons =Attribute::latest()->where('type',13)->where('status','<>','temp')->where('parent_id',null)
+        $promotions =Attribute::latest()->where('type',14)->where('status','<>','temp')->where('parent_id',null)
                     ->where(function($q) use ($r) {
                       if($r->search){
                         $q->where('name','LIKE','%'.$r->search.'%');
                       }
                     })
                     ->paginate(10);
-        return view(adminTheme().'ecommerce-setting.promotion.promotionList',compact('coupons'));
+        return view(adminTheme().'ecommerce-setting.promotion.promotionList',compact('promotions'));
     }
     
     public function ecommercePromotionAction(Request $r,$action,$id=null){
  
         if($action=='create'){
-            $coupon =Attribute::where('type',13)->where('status','temp')->where('addedby_id',Auth::id())->first();
-            if(!$coupon){
-                $coupon =new Attribute();
-                $coupon->type=13;
-                $coupon->status='temp';
-                $coupon->addedby_id=Auth::id();
+            $promotion =Attribute::where('type',14)->where('status','temp')->where('addedby_id',Auth::id())->first();
+            if(!$promotion){
+                $promotion =new Attribute();
+                $promotion->type=14;
+                $promotion->status='temp';
+                $promotion->addedby_id=Auth::id();
             }
-            $coupon->created_at=Carbon::now();
-            $coupon->save();
+            $promotion->created_at=Carbon::now();
+            $promotion->save();
             
-            return redirect()->route('admin.ecommercePromotionAction',['edit',$coupon->id]);
+            return redirect()->route('admin.ecommercePromotionAction',['edit',$promotion->id]);
             
         }
         
-        $coupon =Attribute::where('type',13)->find($id);
-        if(!$coupon){
-            Session()->flash('error','Coupon Are Not Found');
-            return redirect()->route('admin.ecommerceCoupons');
+        $promotion =Attribute::where('type',14)->find($id);
+        if(!$promotion){
+            Session()->flash('error','Promotion Are Not Found');
+            return redirect()->route('admin.ecommercePromotion');
         }
         
         if($action=='search-product'){
@@ -1976,7 +1976,7 @@ public function productsBrandsAction(Request $r,$action,$id=null){
             $products =Post::where('type',2)->where('status','active')->where('name','like','%'.$r->search.'%')->limit(10)->get(['id','name']);
             
             if($r->ajax()){
-                $view = view(adminTheme().'ecommerce-setting.includes.searchProduct',compact('products','coupon'))->render();
+                $view = view(adminTheme().'ecommerce-setting.includes.searchProduct',compact('products','promotion'))->render();
                   return Response()->json([
                       'view' => $view
                   ]);
@@ -1985,16 +1985,16 @@ public function productsBrandsAction(Request $r,$action,$id=null){
         
         if($action=='add-product'){
             
-            $postProduct =$coupon->couponProductPosts()->where('reff_id',$r->product_id)->first();
+            $postProduct =$promotion->couponProductPosts()->where('reff_id',$r->product_id)->first();
             if(!$postProduct){
                 $postProduct =new PostAttribute();
-                $postProduct->src_id=$coupon->id;
+                $postProduct->src_id=$promotion->id;
                 $postProduct->reff_id=$r->product_id;
                 $postProduct->type=6;
                 $postProduct->save();
             }
             if($r->ajax()){
-                $view = view(adminTheme().'ecommerce-setting.includes.couponProductsList',compact('coupon'))->render();
+                $view = view(adminTheme().'ecommerce-setting.includes.couponProductsList',compact('promotion'))->render();
                   return Response()->json([
                       'view' => $view
                   ]);
@@ -2003,10 +2003,10 @@ public function productsBrandsAction(Request $r,$action,$id=null){
         
         if($action=='delete-product'){
             
-            $coupon->couponProductPosts()->whereIn('id',$r->checkedId)->delete();
+            $promotion->couponProductPosts()->whereIn('id',$r->checkedId)->delete();
             
             if($r->ajax()){
-                $view = view(adminTheme().'ecommerce-setting.includes.couponProductsList',compact('coupon'))->render();
+                $view = view(adminTheme().'ecommerce-setting.includes.couponProductsList',compact('promotion'))->render();
                   return Response()->json([
                       'view' => $view
                   ]);
@@ -2014,49 +2014,48 @@ public function productsBrandsAction(Request $r,$action,$id=null){
         }
         
         if($action=='update'){
-            
+            return $r;
             $check = $r->validate([
               'name' => 'required|max:100',
               'discount' => 'nullable|numeric',
               'discount_type' => 'nullable|max:100',
-              'min_shopping' => 'nullable|numeric',
-              'max_shopping' => 'nullable|numeric',
+              'promotion_type' => 'nullable|max:100',
               'start_date' => 'nullable|date',
               'end_date' => 'nullable|date',
               'status' => 'required|max:20',
             ]);
             
-            $coupon->name=$r->name;
-            $coupon->amounts=$r->discount;
-            $coupon->menu_type=$r->discount_type;
-            $coupon->min_shopping=$r->min_shopping;
-            $coupon->max_shopping=$r->max_shopping;
-            $coupon->start_date=$r->start_date;
-            $coupon->end_date=$r->end_date;
-            $coupon->location=$r->coupon_type?:'order';
+            $promotion->name=$r->name;
+            $promotion->amounts=$r->discount;
+            $promotion->menu_type=$r->discount_type;
+            $promotion->min_shopping=$r->min_shopping;
+            $promotion->max_shopping=$r->max_shopping;
+            $promotion->start_date=$r->start_date;
+            $promotion->end_date=$r->end_date;
+            $promotion->location=$r->promotion_type?:'All Products';
             
             $slug =Str::slug($r->name);
             if($slug==null){
-              $coupon->slug=$coupon->id;
+              $promotion->slug=$promotion->id;
             }else{
-              if(Attribute::where('type',13)->where('slug',$slug)->whereNotIn('id',[$coupon->id])->count() >0){
-              $coupon->slug=$slug.'-'.$coupon->id;
+              if(Attribute::where('type',14)->where('slug',$slug)->whereNotIn('id',[$promotion->id])->count() >0){
+              $promotion->slug=$slug.'-'.$promotion->id;
               }else{
-              $coupon->slug=$slug;
+              $promotion->slug=$slug;
               }
             }
-            $coupon->status =$r->status?'active':'inactive';
-            $coupon->editedby_id =Auth::id();
-            $coupon->save();
+            $promotion->status =$r->status?'active':'inactive';
+            $promotion->editedby_id =Auth::id();
+            $promotion->save();
             
             //Tags posts
             if($r->categories){
-              $coupon->couponCtgs()->whereNotIn('reff_id',$r->categories)->delete();
+              $promotion->couponCtgs()->whereNotIn('reff_id',$r->categories)->delete();
                for ($i=0; $i < count($r->categories); $i++) {
-                $ctg = $coupon->couponCtgs()->where('reff_id',$r->categories[$i])->first();
+                $ctg = $promotion->couponCtgs()->where('reff_id',$r->categories[$i])->first();
                 if($ctg){}else{
                 $ctg =new PostAttribute();
-                $ctg->src_id=$coupon->id;
+                $ctg->src_id=$promotion->id;
                 $ctg->reff_id=$r->categories[$i];
                 $ctg->type=5;
                 }
@@ -2064,7 +2063,7 @@ public function productsBrandsAction(Request $r,$action,$id=null){
                 $ctg->save();
                }
             }else{
-                $coupon->couponCtgs()->delete();
+                $promotion->couponCtgs()->delete();
             }
             
             Session()->flash('success','Your Are Successfully Done');
@@ -2073,14 +2072,14 @@ public function productsBrandsAction(Request $r,$action,$id=null){
         }
         
         if($action=='delete'){
-            $coupon->delete();
+            $promotion->delete();
             Session()->flash('success','Your Are Successfully Done');
-            return redirect()->route('admin.ecommerceCoupons');
+            return redirect()->route('admin.ecommercePromotion');
         }
         
         $categories =Attribute::where('type',0)->where('status','active')->where('parent_id',null)->get();
         
-        return view(adminTheme().'ecommerce-setting.promotion.promotionEdit',compact('coupon','categories'));
+        return view(adminTheme().'ecommerce-setting.promotion.promotionEdit',compact('promotion','categories'));
     }
 
 

@@ -59,21 +59,21 @@
                         </button>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
                             <a class="dropdown-item" href="{{route('admin.ecommercePromotionAction','create')}}"><i class="bx bx-plus"></i>Add  Promotion </a>
-                            <a class="dropdown-item" href="{{route('admin.ecommercePromotionAction',['edit',$coupon->id])}}"><i class="bx bx-refresh"></i> reload</a>
+                            <a class="dropdown-item" href="{{route('admin.ecommercePromotionAction',['edit',$promotion->id])}}"><i class="bx bx-refresh"></i> reload</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card-content">
                 <div class="card-body">
-                    <form action="{{route('admin.ecommercePromotionAction',['update',$coupon->id])}}" method="post">
+                    <form action="{{route('admin.ecommercePromotionAction',['update',$promotion->id])}}" method="post">
                             @csrf
                         <div class="table-responsive">
                             <table class="table table-borderless">
                                 <tr>
                                     <td style="width: 150px;">Promotion name* </td>
                                     <td style="min-width: 300px;">
-                                        <input type="text" name="name" value="{{$coupon->name}}" class="form-control form-control-sm" placeholder="Enter Promotion name" required="">
+                                        <input type="text" name="name" value="{{$promotion->name}}" class="form-control form-control-sm" placeholder="Enter Promotion name" required="">
                                         @if ($errors->has('name'))
                                         <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('name') }}</p>
                                         @endif
@@ -83,10 +83,10 @@
                                     <td>Discount</td>
                                     <td>
                                         <div class="input-group">
-                                            <input type="number" name="discount" value="{{$coupon->amounts>0?$coupon->amounts:''}}" class="form-control form-control-sm" placeholder="Discount" required="">
+                                            <input type="number" name="discount" value="{{$promotion->amounts>0?$promotion->amounts:''}}" class="form-control form-control-sm" placeholder="Discount" required="">
                                             <select class="form-control form-control-sm" name="discount_type">
-                                                <option value="0" {{$coupon->menu_type==0?'selected':''}} >Percentage(%)</option>
-                                                <option value="1" {{$coupon->menu_type==1?'selected':''}} >Flat({{general()->currency}})</option>
+                                                <option value="0" {{$promotion->menu_type==0?'selected':''}} >Percentage(%)</option>
+                                                <option value="1" {{$promotion->menu_type==1?'selected':''}} >Flat({{general()->currency}})</option>
                                             </select>
                                         </div>
                                         @if ($errors->has('discount'))
@@ -101,8 +101,8 @@
                                     <td>Validity Date</td>
                                     <td>
                                         <div class="input-group">
-                                            <input type="date" name="start_date" value="{{$coupon->start_date?carbon\carbon::parse($coupon->start_date)->format('Y-m-d'):''}}" class="form-control form-control-sm" >
-                                            <input type="date" name="end_date" value="{{$coupon->end_date?carbon\carbon::parse($coupon->end_date)->format('Y-m-d'):''}}" class="form-control form-control-sm" >
+                                            <input type="date" name="start_date" value="{{$promotion->start_date?carbon\carbon::parse($promotion->start_date)->format('Y-m-d'):''}}" class="form-control form-control-sm" >
+                                            <input type="date" name="end_date" value="{{$promotion->end_date?carbon\carbon::parse($promotion->end_date)->format('Y-m-d'):''}}" class="form-control form-control-sm" >
                                         </div>
                                         @if ($errors->has('start_date'))
                                         <p style="color: red; margin: 0; font-size: 10px;">{{ $errors->first('start_date') }}</p>
@@ -115,7 +115,7 @@
                                 <tr>
                                     <td>Promotion Descriptioin</td>
                                     <td>
-                                        <textarea type="text" name="description" rows="5"  class="form-control form-control-sm" placeholder="Enter Promotion Description">{!!$coupon->description!!}</textarea>
+                                        <textarea type="text" name="description" rows="5"  class="form-control form-control-sm" placeholder="Enter Promotion Description">{!!$promotion->description!!}</textarea>
                                     </td>
                                 </tr>
                                 <tr>
@@ -123,9 +123,9 @@
                                     <td>
                                         <select class="form-control form-control-md" name="promotion_type" required="">
                                             <option value="">Select Type</option>
-                                            <option value="Specific Categories" {{$coupon->location=='Specific Categories'?'selected':''}}>Specific Categories</option>
-                                            <option value="All Products" {{$coupon->location=='All Products'?'selected':''}}>All Products</option>
-                                            <option value="Specific Products" {{$coupon->location=='Specific Products'?'selected':''}}>Specific Products</option>
+                                            <option value="All Products" {{$promotion->location=='All Products'?'selected':''}}>All Products</option>
+                                            <option value="Specific Categories" {{$promotion->location=='Specific Categories'?'selected':''}}>Specific Categories</option>
+                                            <option value="Specific Products" {{$promotion->location=='Specific Products'?'selected':''}}>Specific Products</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -136,14 +136,14 @@
                                             <option vaue="">Select Categories</option>
                                             @foreach($categories as $ctg)
                                             <option value="{{$ctg->id}}"
-                                            @foreach($coupon->couponCtgs as $postctg)
+                                            @foreach($promotion->couponCtgs as $postctg)
                                             {{$postctg->reff_id==$ctg->id?'selected':''}} 
                                             @endforeach
                                             >{{$ctg->name}}</option>
                                             @if($ctg->subCtgs()->where('status','active')->count() > 0)
                                             @foreach($ctg->subCtgs()->where('status','active')->get() as $subCtg)
                                             <option value="{{$subCtg->id}}" 
-                                            @foreach($coupon->couponCtgs as $postctg)
+                                            @foreach($promotion->couponCtgs as $postctg)
                                             {{$postctg->reff_id==$subCtg->id?'selected':''}} 
                                             @endforeach
                                             > - {{$subCtg->name}}</option>
@@ -158,8 +158,8 @@
                                     <td>
                                         <select class="form-control form-control-md" name="status" required="">
                                             <option value="">Select Status</option>
-                                            <option value="active" {{$coupon->status=='active'?'selected':''}}>Active</option>
-                                            <option value="inactive" {{$coupon->status=='inactive'?'selected':''}}>Inactive</option>
+                                            <option value="active" {{$promotion->status=='active'?'selected':''}}>Active</option>
+                                            <option value="inactive" {{$promotion->status=='inactive'?'selected':''}}>Inactive</option>
                                         </select>
                                     </td>
                                 </tr>
@@ -184,7 +184,7 @@
                 <div class="row m-0">
                     <div class="col-md-6" style="padding:5px;">
                         <div class="form-group searchSection">
-                            <input type="text" class="form-control searchProduct" data-url="{{route('admin.ecommerceCouponsAction',['search-product',$coupon->id])}}" placeholder="Enter Search Product">
+                            <input type="text" class="form-control searchProduct" data-url="{{route('admin.ecommerceCouponsAction',['search-product',$promotion->id])}}" placeholder="Enter Search Product">
                             <div class="searchResult"></div>
                         </div>
                     </div>
