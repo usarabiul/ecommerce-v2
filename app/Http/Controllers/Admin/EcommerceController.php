@@ -2014,7 +2014,7 @@ public function productsBrandsAction(Request $r,$action,$id=null){
         }
         
         if($action=='update'){
-            return $r;
+
             $check = $r->validate([
               'name' => 'required|max:100',
               'discount' => 'nullable|numeric',
@@ -2026,10 +2026,8 @@ public function productsBrandsAction(Request $r,$action,$id=null){
             ]);
             
             $promotion->name=$r->name;
-            $promotion->amounts=$r->discount;
+            $promotion->amount=$r->discount;
             $promotion->menu_type=$r->discount_type;
-            $promotion->min_shopping=$r->min_shopping;
-            $promotion->max_shopping=$r->max_shopping;
             $promotion->start_date=$r->start_date;
             $promotion->end_date=$r->end_date;
             $promotion->location=$r->promotion_type?:'All Products';
@@ -2049,25 +2047,25 @@ public function productsBrandsAction(Request $r,$action,$id=null){
             $promotion->save();
             
             //Tags posts
-            if($r->categories){
-              $promotion->couponCtgs()->whereNotIn('reff_id',$r->categories)->delete();
-               for ($i=0; $i < count($r->categories); $i++) {
-                $ctg = $promotion->couponCtgs()->where('reff_id',$r->categories[$i])->first();
-                if($ctg){}else{
-                $ctg =new PostAttribute();
-                $ctg->src_id=$promotion->id;
-                $ctg->reff_id=$r->categories[$i];
-                $ctg->type=5;
-                }
-                $ctg->drag=$i;
-                $ctg->save();
-               }
-            }else{
-                $promotion->couponCtgs()->delete();
-            }
+            // if($r->categories){
+            //   $promotion->couponCtgs()->whereNotIn('reff_id',$r->categories)->delete();
+            //    for ($i=0; $i < count($r->categories); $i++) {
+            //     $ctg = $promotion->couponCtgs()->where('reff_id',$r->categories[$i])->first();
+            //     if($ctg){}else{
+            //     $ctg =new PostAttribute();
+            //     $ctg->src_id=$promotion->id;
+            //     $ctg->reff_id=$r->categories[$i];
+            //     $ctg->type=5;
+            //     }
+            //     $ctg->drag=$i;
+            //     $ctg->save();
+            //    }
+            // }else{
+            //     $promotion->couponCtgs()->delete();
+            // }
             
             Session()->flash('success','Your Are Successfully Done');
-            return redirect()->back();
+            return redirect()->route('admin.ecommercePromotion');
 
         }
         

@@ -83,7 +83,7 @@
                                     <td>Discount</td>
                                     <td>
                                         <div class="input-group">
-                                            <input type="number" name="discount" value="{{$promotion->amounts>0?$promotion->amounts:''}}" class="form-control form-control-sm" placeholder="Discount" required="">
+                                            <input type="number" name="discount" value="{{$promotion->amount>0?$promotion->amount:''}}" class="form-control form-control-sm" placeholder="Discount" required="">
                                             <select class="form-control form-control-sm" name="discount_type">
                                                 <option value="0" {{$promotion->menu_type==0?'selected':''}} >Percentage(%)</option>
                                                 <option value="1" {{$promotion->menu_type==1?'selected':''}} >Flat({{general()->currency}})</option>

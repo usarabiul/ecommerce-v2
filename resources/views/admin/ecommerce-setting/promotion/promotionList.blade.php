@@ -38,44 +38,58 @@
                 </div>
             </form>
             <hr>
-             <div class="table-responsive">
+             <div class="table-responsive" style="min-height:300px;">
                 <table class="table mb-0  table-hover">
                     <thead class="table-light">
                     <tr>
                         <th style="min-width: 40px;width: 40px;">SL</th>
                         <th style="min-width: 150px;">Coupon Name</th>
-                        <th style="min-width: 150px;width: 150px;">Validity</th>
-                        <th style="min-width: 150px;width: 150px;">Discount</th>
-                        <th style="min-width: 120px;width: 120px;">Status</th>
-                        <th style="min-width: 100px;width: 100px;">Action</th>
+                        <th style="min-width: 160px;width: 160px;">Type</th>
+                        <th style="min-width: 260px;width: 260px;">Validity</th>
+                        <th style="min-width: 100px;width: 100px;">Discount</th>
+                        <th style="min-width: 100px;width: 100px;">Status</th>
+                        <th style="min-width: 80px;width: 80px;">Action</th>
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach($coupons as $i=>$coupon)
+                    @foreach($promotions as $i=>$promotion)
                     <tr>
                         <td>{{$i+1}}</td>
-                        <td>{{$coupon->name}}</td>
+                        <td>{{$promotion->name}}</td>
+                        <td>
+                            {{$promotion->location}}
+                        </td>
                         <td>
                             
-                            @if($coupon->start_date && $coupon->end_date)
-                                {{carbon\carbon::parse($coupon->start_date)->format('d-m-Y')}} - 
-                                {{carbon\carbon::parse($coupon->end_date)->format('d-m-Y')}} 
+                            @php
+                                $now = \Carbon\Carbon::now();
+                                $startDate = $promotion->start_date ? \Carbon\Carbon::parse($promotion->start_date) : null;
+                                $endDate = $promotion->end_date ? \Carbon\Carbon::parse($promotion->end_date) : null;
+                                $daysLeft = $endDate ? (int) $now->diffInDays($endDate) + 1 : 0;
+                            @endphp
+
+                            @if($startDate && $endDate)
+                                {{ $startDate->format('d-m-Y') }} - {{ $endDate->format('d-m-Y') }}
                                 
-                                @if(Carbon\Carbon::now() < carbon\carbon::parse($coupon->end_date))
-                                ( {{carbon\carbon::now()->diffInDays(carbon\carbon::parse($coupon->end_date))+1}} Days)
+                                @if($now->lessThan($endDate))
+                                    ({{ $daysLeft }} Days)
                                 @else
-                                <span class="text-danger">(Expired)</span>
+                                    <span class="text-danger">(Expired)</span>
                                 @endif
-                            @elseif($coupon->start_date && $coupon->end_date==null)
-                                <span>{{carbon\carbon::parse($coupon->start_date)->format('d-m-Y')}} - Unlimited</span>
-                            @elseif($coupon->start_date==null && $coupon->end_date)
-                                <span>{{carbon\carbon::parse($coupon->end_date)->format('d-m-Y')}}
-                                @if(Carbon\Carbon::now() < carbon\carbon::parse($coupon->end_date))
-                                ( {{carbon\carbon::now()->diffInDays(carbon\carbon::parse($coupon->end_date))+1}} Days)
-                                @else
-                                <span class="text-danger">(Expired)</span>
-                                @endif
+
+                            @elseif($startDate && !$endDate)
+                                <span>{{ $startDate->format('d-m-Y') }} - Unlimited</span>
+
+                            @elseif(!$startDate && $endDate)
+                                <span>
+                                    {{ $endDate->format('d-m-Y') }}
+                                    @if($now->lessThan($endDate))
+                                        ({{ $daysLeft }} Days)
+                                    @else
+                                        <span class="text-danger">(Expired)</span>
+                                    @endif
                                 </span>
+
                             @else
                                 <span>Unlimited</span>
                             @endif
@@ -83,43 +97,45 @@
                         </td>
                         <td>
                             
-                            @if($coupon->menu_type==1)
-                            <span>{{priceFullFormat($coupon->amounts)}}</span>
+                            @if($promotion->menu_type==1)
+                            <span>{{priceFullFormat($promotion->amount)}}</span>
                             @else
-                            <span>{{$coupon->amounts>0?$coupon->amounts:0}}%</span>
-                            @endif
-                            
-                            @if($coupon->min_shopping>0 && $coupon->max_shopping>0)
-                            (Min:{{priceFullFormat($coupon->min_shopping)}} -  Max:{{priceFullFormat($coupon->max_shopping)}})
-                            @elseif($coupon->min_shopping>0)
-                            (Min:{{priceFullFormat($coupon->min_shopping)}})
-                            @elseif($coupon->max_shopping>0)
-                            (Max:{{priceFullFormat($coupon->max_shopping)}})
-                            @endif
-                            
-                        </td>
-                        <td>
-                            @if($coupon->status=='active')
-                            <span class="badge badge-success">{{ucfirst($coupon->status)}}</span>
-                            @else
-                            <span class="badge badge-danger">{{ucfirst($coupon->status)}}</span>
+                            <span>{{$promotion->amount>0?$promotion->amount:0}}%</span>
                             @endif
                         </td>
+                        
                         <td>
-                            <a href="{{route('admin.ecommerceCouponsAction',['edit',$coupon->id])}}" class="badge badge-success" ><i class="fa fa-edit"></i></a>
-                            <a href="{{route('admin.ecommerceCouponsAction',['delete',$coupon->id])}}" class="badge badge-danger" onclick="return confirm('Are You Want To Delete?')"><i class="fa fa-trash"></i></a>
+                            @if($promotion->status=='active')
+                            <span class="badge rounded-pill text-success bg-light-success p-2 text-uppercase px-3">{{ucfirst($promotion->status)}}</span>
+                            @else
+                            <span class="badge rounded-pill text-danger bg-light-danger p-2 text-uppercase px-3">{{ucfirst($promotion->status)}}</span>
+                            @endif
+                        </td>
+                        <td style="text-align:center;padding: 3px;">
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-primary split-bg-primary" data-bs-toggle="dropdown">	
+                                    <span class="bx bx-dots-vertical"></span>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-end">
+                                    <a class="dropdown-item" href="{{route('pageView',$promotion->slug?:'no-slug')}}" target="_blank"><i class="bx bxs-show"></i> View </a>
+                                    <a class="dropdown-item" href="{{route('admin.ecommercePromotionAction',['edit',$promotion->id])}}"><i class="bx bxs-edit"></i> Edit </a>
+                                    <a class="dropdown-item text-danger" href="{{route('admin.ecommercePromotionAction',['delete',$promotion->id])}}" onclick="return confirm('Are you sure you want to delete?')">
+                                        <i class="bx bxs-trash"></i> Delete
+                                    </a>
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     @endforeach
-                    @if($coupons->count()==0)
+                    @if($promotions->count()==0)
                         <tr>
-                            <td colspan="6" class="text-center">No Result Found</td>
+                            <td colspan="7" class="text-center">No Result Found</td>
                         </tr>
                     @endif
                     </tbody>
                 </table>
              </div>
-            {{$coupons->links('pagination')}}
+            {{$promotions->links('pagination')}}
         </div>
     </div>
 </div>
