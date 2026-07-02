@@ -70,16 +70,13 @@
 
                             @if($startDate && $endDate)
                                 {{ $startDate->format('d-m-Y') }} - {{ $endDate->format('d-m-Y') }}
-                                
                                 @if($now->lessThan($endDate))
                                     ({{ $daysLeft }} Days)
                                 @else
                                     <span class="text-danger">(Expired)</span>
                                 @endif
-
                             @elseif($startDate && !$endDate)
                                 <span>{{ $startDate->format('d-m-Y') }} - Unlimited</span>
-
                             @elseif(!$startDate && $endDate)
                                 <span>
                                     {{ $endDate->format('d-m-Y') }}
